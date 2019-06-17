@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Filesystem;
 use SuperClosure\Serializer;
 use UnderScorer\Core\Admin\Menu;
 use UnderScorer\Core\Admin\Notices;
