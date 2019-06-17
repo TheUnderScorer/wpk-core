@@ -1,0 +1,4 @@
+/vendor
+/tests/phpunit/.env
+/public/views/cache
+/.idea

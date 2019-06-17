@@ -1,0 +1,40 @@
+{
+  "name": "the-under-scorer/wpk-core",
+  "version": "1.0",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/jeremeamia/super_closure"
+    }
+  ],
+  "authors": [
+    {
+      "name": "Przemysław Żydek",
+      "email": "przemyslawzydek@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "require": {
+    "jeremeamia/superclosure": "^2.4",
+    "jenssegers/blade": "^1.1",
+    "symfony/http-foundation": "^4.1",
+    "guzzlehttp/guzzle": "^6.3",
+    "vlucas/phpdotenv": "^3.3",
+    "nilportugues/sql-query-builder": "^1.7",
+    "phpunit/phpunit": "^7",
+    "illuminate/database": "^5.4",
+    "illuminate/pagination": "^5.4",
+    "the-under-scorer/wp-eloquent": "^1.2.0",
+    "symfony/filesystem": "^4.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "UnderScorer\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "UnderScorer\\Core\\Tests\\": "tests/phpunit"
+    }
+  }
+}
