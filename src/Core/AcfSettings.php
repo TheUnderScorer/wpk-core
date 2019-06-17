@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core;
 
+use UnderScorer\Core\Exceptions\Exception;
 use UnderScorer\Core\Storage\StorageInterface;
 
 /**
@@ -21,10 +22,19 @@ class AcfSettings implements StorageInterface
      * Settings constructor.
      *
      * @param string $prefix
+     *
+     * @throws Exception
      */
     public function __construct( string $prefix )
     {
         $this->prefix = $prefix;
+
+        if ( ! function_exists( 'get_field' ) ) {
+            throw new Exception(
+                sprintf( 'ACF plugin is not present. Use %s class instead.', Settings::class )
+            );
+        }
+
     }
 
     /**
