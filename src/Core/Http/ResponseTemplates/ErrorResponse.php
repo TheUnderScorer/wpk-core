@@ -76,4 +76,12 @@ class ErrorResponse extends BaseResponse
 
     }
 
+    /**
+     * @return array
+     */
+    public function getMessages(): array
+    {
+        return $this->messages;
+    }
+
 }

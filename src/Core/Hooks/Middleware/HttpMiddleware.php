@@ -5,6 +5,7 @@ namespace UnderScorer\Core\Hooks\Middleware;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\Response;
+use UnderScorer\Core\Http\ResponseInterface;
 
 /**
  * Class HttpMiddleware
@@ -14,7 +15,7 @@ abstract class HttpMiddleware extends Middleware
 {
 
     /**
-     * @var Response
+     * @var ResponseInterface
      */
     protected $response;
 
@@ -28,9 +29,9 @@ abstract class HttpMiddleware extends Middleware
      *
      * @param AppInterface $app
      * @param Request      $request
-     * @param Response     $response
+     * @param ResponseInterface     $response
      */
-    public function __construct( AppInterface $app, Request $request = null, Response $response = null )
+    public function __construct( AppInterface $app, Request $request = null, ResponseInterface $response = null )
     {
         parent::__construct( $app );
 
@@ -39,19 +40,19 @@ abstract class HttpMiddleware extends Middleware
     }
 
     /**
-     * @return Response
+     * @return ResponseInterface
      */
-    public function getResponse(): Response
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }
 
     /**
-     * @param Response $response
+     * @param ResponseInterface $response
      *
      * @return HttpMiddleware
      */
-    public function setResponse( Response $response ): HttpMiddleware
+    public function setResponse( ResponseInterface $response ): HttpMiddleware
     {
         $this->response = $response;
 

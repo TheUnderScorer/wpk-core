@@ -6,6 +6,7 @@ use UnderScorer\Core\App;
 use UnderScorer\Core\Hooks\Middleware\HttpMiddleware;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\Response;
+use UnderScorer\Core\Http\ResponseInterface;
 
 /**
  * @author Przemysław Żydek
@@ -14,7 +15,7 @@ abstract class HttpController extends Controller
 {
 
     /**
-     * @var Response
+     * @var ResponseInterface
      */
     protected $response;
 
@@ -38,9 +39,9 @@ abstract class HttpController extends Controller
      *
      * @param App      $app
      * @param Request  $request
-     * @param Response $response
+     * @param ResponseInterface $response
      */
-    public function __construct( App $app, Request $request = null, Response $response = null )
+    public function __construct( App $app, Request $request = null, ResponseInterface $response = null )
     {
 
         $this->response = $response;
@@ -56,9 +57,9 @@ abstract class HttpController extends Controller
     abstract public function handle(): void;
 
     /**
-     * @return Response
+     * @return ResponseInterface
      */
-    public function getResponse(): Response
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }
