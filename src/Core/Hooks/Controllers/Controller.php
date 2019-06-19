@@ -4,6 +4,9 @@ namespace UnderScorer\Core\Hooks\Controllers;
 
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Middleware\Middleware;
+use UnderScorer\Core\Http\Request;
+use UnderScorer\Core\Http\Response;
+use UnderScorer\Core\Http\ResponseInterface;
 use UnderScorer\Core\Utility\Arr;
 use UnderScorer\Core\View;
 
@@ -12,6 +15,16 @@ use UnderScorer\Core\View;
  */
 abstract class Controller
 {
+    /**
+     * @var ResponseInterface
+     */
+    protected $response;
+
+    /**
+     * @var Request
+     */
+    protected $request;
+
     /**
      * @var array Array with middleware classes to use
      */
@@ -25,11 +38,15 @@ abstract class Controller
     /**
      * Controller constructor.
      *
-     * @param AppInterface $app
+     * @param AppInterface           $app
+     * @param Request|null           $request
+     * @param ResponseInterface|null $response
      */
-    public function __construct( AppInterface $app )
+    public function __construct( AppInterface $app, Request $request = null, ResponseInterface $response = null )
     {
-        $this->app = $app;
+        $this->app      = $app;
+        $this->request  = $request;
+        $this->response = $response;
 
         $this->setup();
         $this->loadMiddleware();
@@ -56,6 +73,46 @@ abstract class Controller
 
         return $this;
 
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getResponse(): ResponseInterface
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @return HttpController
+     */
+    public function setResponse( Response $response ): self
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return HttpController
+     */
+    public function setRequest( Request $request ): self
+    {
+        $this->request = $request;
+
+        return $this;
     }
 
     /**
