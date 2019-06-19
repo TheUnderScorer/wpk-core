@@ -2,17 +2,29 @@
 
 namespace UnderScorer\Core\Hooks\Middleware;
 
+use UnderScorer\Core\Contracts\AppInterface;
+
 /**
  * @author Przemysław Żydek
  */
-interface Middleware
+abstract class Middleware
 {
 
     /**
-     * @param array $params Optional parameters
-     *
-     * @return void
+     * @var AppInterface
      */
-    public function handle( array $params = [] );
+    protected $app;
+
+    public function __construct( AppInterface $app )
+    {
+        $this->app = $app;
+    }
+
+    /**
+     * Calls middleware
+     *
+     * @return mixed
+     */
+    abstract public function handle();
 
 }

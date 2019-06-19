@@ -56,15 +56,16 @@ class ErrorResponse extends BaseResponse
      * Adds new message to response
      *
      * @param string $message
+     * @param mixed  $code
      * @param array  $args
      *
      * @return self
      */
-    public function addMessage( string $message, $args = [] ): self
+    public function addMessage( string $message, $code = 'SERVER_ERROR', $args = [] ): self
     {
 
         $args += [
-            'code'    => 'ERROR',
+            'code'    => $code,
             'field'   => '',
             'message' => $message,
         ];

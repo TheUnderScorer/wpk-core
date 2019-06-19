@@ -33,6 +33,16 @@ class Response
     }
 
     /**
+     * @param string $view
+     */
+    public function render( string $view ): void
+    {
+        echo $view;
+
+        die();
+    }
+
+    /**
      * Redirects user to provided url
      *
      * @return void

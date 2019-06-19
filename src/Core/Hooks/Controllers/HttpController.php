@@ -3,7 +3,7 @@
 namespace UnderScorer\Core\Hooks\Controllers;
 
 use UnderScorer\Core\App;
-use UnderScorer\Core\Hooks\Middleware\Middleware;
+use UnderScorer\Core\Hooks\Middleware\HttpMiddleware;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\Response;
 
@@ -12,11 +12,6 @@ use UnderScorer\Core\Http\Response;
  */
 abstract class HttpController extends Controller
 {
-
-    /**
-     * @var array Array with middleware classes to use
-     */
-    protected $middleware = [];
 
     /**
      * @var Response
@@ -52,24 +47,6 @@ abstract class HttpController extends Controller
         $this->request  = $request;
 
         parent::__construct( $app );
-
-        $this->loadMiddleware();
-
-    }
-
-    /**
-     * Perform load of middleware modules
-     *
-     * @return self
-     */
-    protected function loadMiddleware(): self
-    {
-
-        foreach ( $this->middleware as $key => $middleware ) {
-            $this->middleware[ $key ] = new $middleware();
-        }
-
-        return $this;
 
     }
 
@@ -119,70 +96,19 @@ abstract class HttpController extends Controller
     }
 
     /**
-     * Performs controller setup
+     * Perform load of middleware modules
      *
-     * @return void
+     * @return static
      */
-    protected function setup(): void
+    protected function loadMiddleware()
     {
 
-        add_action( "wp_ajax_$this->hook", [ $this, 'handle' ] );
+        foreach ( $this->middleware as $key => $middleware ) {
+            $this->middleware[ $key ] = new $middleware( $this->app );
 
-        if ( $this->public ) {
-            add_action( "wp_ajax_nopriv_$this->hook", [ $this, 'handle' ] );
-        }
-
-    }
-
-    /**
-     * Shorthand for registering new action
-     *
-     * @param string $hook
-     * @param string $callback
-     * @param int    $priority
-     * @param int    $args
-     *
-     * @return void
-     */
-    protected function addAction( string $hook, string $callback, int $priority = 10, int $args = 1 )
-    {
-        add_action( $hook, [ $this, $callback ], $priority, $args );
-    }
-
-    /**
-     * Shorthand for registering new filter
-     *
-     * @param string $hook
-     * @param string $callback
-     * @param int    $priority
-     * @param int    $args
-     *
-     * @return void
-     */
-    protected function addFilter( string $hook, string $callback, int $priority = 10, int $args = 1 )
-    {
-        add_filter( $hook, [ $this, $callback ], $priority, $args );
-    }
-
-    /**
-     * Calls controller middleware
-     *
-     * @param array|string $middleware If empty all middlewares will be used
-     * @param array        $params Optional parameters for middleware
-     *
-     * @return self
-     */
-    protected function middleware( $middleware = null, ...$params ): self
-    {
-
-        //Call all middlewares
-        if ( empty( $middleware ) ) {
-            $middleware = array_keys( $this->middleware );
-        }
-
-        foreach ( (array) $middleware as $key ) {
-            if ( isset( $this->middleware[ $key ] ) ) {
-                $this->callMiddleware( $this->middleware[ $key ], $params );
+            if ( $middleware instanceof HttpMiddleware ) {
+                $middleware->setRequest( $this->request );
+                $middleware->setResponse( $this->response );
             }
         }
 
@@ -191,14 +117,17 @@ abstract class HttpController extends Controller
     }
 
     /**
-     * @param Middleware $middleware
-     * @param array      $params
+     * Performs controller setup
      *
      * @return void
      */
-    private function callMiddleware( Middleware $middleware, array $params = [] )
+    protected function setup(): void
     {
-        $middleware->handle( $params );
+        add_action( "wp_ajax_$this->hook", [ $this, 'handle' ] );
+
+        if ( $this->public ) {
+            add_action( "wp_ajax_nopriv_$this->hook", [ $this, 'handle' ] );
+        }
     }
 
 }
