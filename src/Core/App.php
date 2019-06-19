@@ -4,7 +4,6 @@ namespace UnderScorer\Core;
 
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\Controller;
-use UnderScorer\Core\Hooks\Controllers\HttpController;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\Response;
 use UnderScorer\Core\Storage\StorageInterface;
@@ -26,22 +25,27 @@ class App implements AppInterface
      * @var string Slug used for translations
      */
     protected $slug;
+
     /**
      * @var string Main plugin file
      */
     protected $file;
+
     /**
      * @var StorageInterface
      */
     protected $container;
+
     /**
      * @var string Stores path to this plugin directory
      */
     protected $dir;
+
     /**
      * @var string Stores url to this plugin directory
      */
     protected $url;
+
 
     /**
      * Core constructor
@@ -88,7 +92,6 @@ class App implements AppInterface
         foreach ( $controllers as $controller ) {
 
             $instance = new $controller( $this );
-
             $this->setupController( $instance );
 
         }
@@ -105,11 +108,20 @@ class App implements AppInterface
     public function setupController( Controller $controller ): void
     {
 
-        if ( $controller instanceof HttpController ) {
-            $controller
-                ->setRequest( Request::createFromGlobals() )
-                ->setResponse( new Response );
+        static $request = null;
+        static $response = null;
+
+        if ( empty( $request ) ) {
+            $request = Request::createFromGlobals();
         }
+
+        if ( empty( $response ) ) {
+            $response = new Response;
+        }
+
+        $controller
+            ->setRequest( $request )
+            ->setResponse( $response );
 
     }
 

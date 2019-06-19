@@ -3,6 +3,7 @@
 namespace UnderScorer\Core\Hooks\Controllers;
 
 use UnderScorer\Core\App;
+use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Middleware\HttpMiddleware;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\Response;
@@ -15,16 +16,6 @@ abstract class HttpController extends Controller
 {
 
     /**
-     * @var ResponseInterface
-     */
-    protected $response;
-
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
      * @var string
      */
     protected $hook = '';
@@ -35,66 +26,9 @@ abstract class HttpController extends Controller
     protected $public = false;
 
     /**
-     * Controller constructor.
-     *
-     * @param App      $app
-     * @param Request  $request
-     * @param ResponseInterface $response
-     */
-    public function __construct( App $app, Request $request = null, ResponseInterface $response = null )
-    {
-
-        $this->response = $response;
-        $this->request  = $request;
-
-        parent::__construct( $app );
-
-    }
-
-    /**
      * @return void
      */
     abstract public function handle(): void;
-
-    /**
-     * @return ResponseInterface
-     */
-    public function getResponse(): ResponseInterface
-    {
-        return $this->response;
-    }
-
-    /**
-     * @param Response $response
-     *
-     * @return HttpController
-     */
-    public function setResponse( Response $response ): self
-    {
-        $this->response = $response;
-
-        return $this;
-    }
-
-    /**
-     * @return Request
-     */
-    public function getRequest(): Request
-    {
-        return $this->request;
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return HttpController
-     */
-    public function setRequest( Request $request ): self
-    {
-        $this->request = $request;
-
-        return $this;
-    }
 
     /**
      * Perform load of middleware modules
