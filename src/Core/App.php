@@ -2,10 +2,12 @@
 
 namespace UnderScorer\Core;
 
+use Symfony\Component\HttpFoundation\Session\Session;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\Response;
+use UnderScorer\Core\Http\ResponseInterface;
 use UnderScorer\Core\Storage\StorageInterface;
 
 /**
@@ -46,35 +48,56 @@ class App implements AppInterface
      */
     protected $url;
 
+    /**
+     * @var ResponseInterface
+     */
+    private $response;
+
+    /**
+     * @var Request
+     */
+    private $request;
 
     /**
      * Core constructor
      *
-     * @param string           $slug Plugin slug
-     * @param string           $file Main plugin file
-     * @param StorageInterface $container Container for modules
-     * @param Settings         $settings Settings instance
-     * @param string[]         $controllers Array of controllers references that will be loaded
+     * @param string            $slug Plugin slug
+     * @param string            $file Main plugin file
+     * @param StorageInterface  $container Container for modules
+     * @param Settings          $settings Settings instance
+     * @param Request           $request
+     * @param ResponseInterface $response
      */
     public function __construct(
         string $slug,
         string $file,
         StorageInterface $container,
         Settings $settings,
-        array $controllers = []
+        Request $request = null,
+        ResponseInterface $response = null
     ) {
+
+        if ( empty( $request ) ) {
+            $request = Request::createFromGlobals();
+
+            $request->setSession(
+                new Session()
+            );
+        }
+
+        if ( empty( $response ) ) {
+            $response = new Response;
+        }
 
         $this->slug      = $slug;
         $this->file      = empty( $file ) ? __FILE__ : $file;
         $this->url       = plugin_dir_url( $this->file );
         $this->dir       = plugin_dir_path( $this->file );
         $this->container = $container;
+        $this->request   = $request;
+        $this->response  = $response;
 
         $this->container->add( $settings, 'settings' );
-
-        if ( ! empty( $controllers ) ) {
-            $this->loadControllers( $controllers );
-        }
 
         do_action( 'wpk/core/loaded', $this );
         do_action( "wpk/core/$this->slug/loaded", $this );
@@ -108,20 +131,9 @@ class App implements AppInterface
     public function setupController( Controller $controller ): void
     {
 
-        static $request = null;
-        static $response = null;
-
-        if ( empty( $request ) ) {
-            $request = Request::createFromGlobals();
-        }
-
-        if ( empty( $response ) ) {
-            $response = new Response;
-        }
-
         $controller
-            ->setRequest( $request )
-            ->setResponse( $response );
+            ->setRequest( $this->request )
+            ->setResponse( $this->response );
 
     }
 
