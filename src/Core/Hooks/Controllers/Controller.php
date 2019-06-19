@@ -2,8 +2,9 @@
 
 namespace UnderScorer\Core\Hooks\Controllers;
 
-use UnderScorer\Core\App;
 use UnderScorer\Core\Contracts\AppInterface;
+use UnderScorer\Core\Hooks\Middleware\Middleware;
+use UnderScorer\Core\Utility\Arr;
 use UnderScorer\Core\View;
 
 /**
@@ -11,6 +12,10 @@ use UnderScorer\Core\View;
  */
 abstract class Controller
 {
+    /**
+     * @var array Array with middleware classes to use
+     */
+    protected $middleware = [];
 
     /**
      * @var AppInterface Stores main app instance
@@ -24,11 +29,10 @@ abstract class Controller
      */
     public function __construct( AppInterface $app )
     {
-
         $this->app = $app;
 
         $this->setup();
-
+        $this->loadMiddleware();
     }
 
     /**
@@ -37,6 +41,22 @@ abstract class Controller
      * @return void
      */
     abstract protected function setup(): void;
+
+    /**
+     * Perform load of middleware modules
+     *
+     * @return static
+     */
+    protected function loadMiddleware()
+    {
+
+        foreach ( $this->middleware as $key => $middleware ) {
+            $this->middleware[ $key ] = new $middleware( $this->app );
+        }
+
+        return $this;
+
+    }
 
     /**
      * @param string $path
@@ -57,33 +77,41 @@ abstract class Controller
     }
 
     /**
-     * Shorthand for registering new action
+     * Calls controller middleware
      *
-     * @param string $hook
-     * @param string $callback
-     * @param int    $priority
-     * @param int    $args
+     * @param array|string $middleware If empty all middlewares will be used
+     * @param array        $params Optional parameters for middleware
      *
-     * @return void
+     * @return static
      */
-    protected function addAction( string $hook, string $callback, int $priority = 10, int $args = 1 )
+    protected function middleware( $middleware = null, ...$params )
     {
-        add_action( $hook, [ $this, $callback ], $priority, $args );
+
+        if ( empty( $middleware ) ) {
+            $middleware = array_keys( $this->middleware );
+        }
+
+        foreach ( Arr::make( $middleware ) as $key ) {
+            if ( isset( $this->middleware[ $key ] ) ) {
+                $this->callMiddleware( $this->middleware[ $key ], $params );
+            }
+        }
+
+        return $this;
+
     }
 
     /**
-     * Shorthand for registering new filter
+     * Calls middleware with provided params
      *
-     * @param string $hook
-     * @param string $callback
-     * @param int    $priority
-     * @param int    $args
+     * @param Middleware $middleware
+     * @param array      $params
      *
      * @return void
      */
-    protected function addFilter( string $hook, string $callback, int $priority = 10, int $args = 1 )
+    private function callMiddleware( Middleware $middleware, array $params = [] ): void
     {
-        add_filter( $hook, [ $this, $callback ], $priority, $args );
+        call_user_func_array( [ $middleware, 'handle' ], $params );
     }
 
 }

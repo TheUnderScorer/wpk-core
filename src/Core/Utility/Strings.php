@@ -2,12 +2,14 @@
 
 namespace UnderScorer\Core\Utility;
 
+use Illuminate\Support\Str;
+
 /**
  * String related utilities
  *
  * @author Przemysław Żydek
  */
-class Strings
+class Strings extends Str
 {
 
     /**
@@ -29,19 +31,6 @@ class Strings
 
         return true;
 
-    }
-
-    /**
-     * Check if string contains provided substring
-     *
-     * @param string $string
-     * @param string $substring
-     *
-     * @return bool
-     */
-    public static function contains( string $string, string $substring ): bool
-    {
-        return strpos( $string, $substring ) !== false;
     }
 
     /**

@@ -2,10 +2,10 @@
 
 namespace UnderScorer\Core;
 
-use Illuminate\Filesystem\Filesystem;
 use Jenssegers\Blade\Blade;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 use UnderScorer\Core\Contracts\ViewRenderInterface;
-use UnderScorer\Core\Exceptions\FileException;
 
 /**
  * View wrapper class
@@ -42,7 +42,7 @@ class View implements ViewRenderInterface
      * @param string|array $path Paths to views directory
      * @param string       $cachePath Path to cache directory
      *
-     * @throws FileException
+     * @throws IOException
      */
     public function __construct( Filesystem $filesystem, string $path, string $cachePath = '' )
     {
@@ -64,16 +64,13 @@ class View implements ViewRenderInterface
 
     }
 
+
     /**
-     * @throws FileException
+     * @throws IOException
      */
     protected function createCacheDirectory(): void
     {
-        $result = $this->fileSystem->makeDirectory( $this->cachePath, 0777, true );
-
-        if ( ! $result ) {
-            throw new FileException( 'Unable to create cache directory.' );
-        }
+        $this->fileSystem->mkdir( $this->cachePath, 0777 );
     }
 
     /**

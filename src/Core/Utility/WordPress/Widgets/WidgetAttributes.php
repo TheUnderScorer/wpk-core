@@ -5,7 +5,7 @@ namespace UnderScorer\Core\Utility\WordPress\Widgets;
 /**
  * @author Przemysław Żydek
  */
-final class WidgetAttributes
+class WidgetAttributes
 {
 
     /**

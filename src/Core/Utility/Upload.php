@@ -3,11 +3,12 @@
 namespace UnderScorer\Core\Utility;
 
 use Exception;
+use UnderScorer\Core\Exceptions\WPErrorException;
+
 
 /**
- * Middleware for handling upload
- *
- * @author Przemysław Żydek
+ * Class Upload
+ * @package UnderScorer\Core\Utility
  */
 class Upload
 {
@@ -41,7 +42,7 @@ class Upload
         $attachID = wp_insert_attachment( $attachment, $upload[ 'file' ] );
 
         if ( is_wp_error( $attachID ) ) {
-            throw new Exception( $attachID->get_error_message() );
+            throw new WPErrorException( $attachID );
         }
 
         require_once( ABSPATH . 'wp-admin/includes/image.php' );

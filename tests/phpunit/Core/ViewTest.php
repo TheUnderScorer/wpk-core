@@ -2,7 +2,7 @@
 
 namespace UnderScorer\Core\Tests\Core;
 
-use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Filesystem;
 use UnderScorer\Core\Exceptions\FileException;
 use UnderScorer\Core\Tests\TestCase;
 use UnderScorer\Core\View;
@@ -48,7 +48,7 @@ final class ViewTest extends TestCase
         new View( $fileSystem, self::$app->getPath( 'views' ), $cacheDir );
         $this->assertTrue( $fileSystem->exists( $cacheDir ) );
 
-        $fileSystem->deleteDirectory( $cacheDir );
+        $fileSystem->remove( $cacheDir );
 
     }
 

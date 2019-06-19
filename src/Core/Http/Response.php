@@ -7,7 +7,7 @@ use UnderScorer\Core\Http\ResponseTemplates\ResponseTemplateInterface;
 /**
  * @author Przemysław Żydek
  */
-class Response
+class Response implements ResponseInterface
 {
 
     /**
@@ -27,9 +27,19 @@ class Response
      *
      * @return void
      */
-    public function send( ResponseTemplateInterface $response )
+    public function send( ResponseTemplateInterface $response ): void
     {
         wp_send_json( $response->toArray(), $this->code );
+    }
+
+    /**
+     * @param string $view
+     */
+    public function render( string $view ): void
+    {
+        echo $view;
+
+        die();
     }
 
     /**
@@ -37,7 +47,7 @@ class Response
      *
      * @return void
      */
-    public function redirect()
+    public function redirect(): void
     {
         wp_redirect( $this->redirectUrl, $this->code );
 
