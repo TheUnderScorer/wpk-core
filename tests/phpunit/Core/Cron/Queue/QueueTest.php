@@ -21,7 +21,8 @@ final class QueueTest extends TestCase
     public function testIsTaskBeingExecuted()
     {
 
-        $closure = function () {
+        $closure = function ()
+        {
             throw new Exception( 'Task was executed!' );
         };
 
@@ -32,13 +33,8 @@ final class QueueTest extends TestCase
             'Task was executed!'
         );
 
-        /**
-         * @var CronInterface $cron
-         */
-        $cron = self::$app->getContainer()->get( 'wpk/cron/queue/job' );
-
         do_action(
-            $cron->getHook(), $serializedClosure
+            'wpk/cron/queue/job', $serializedClosure
         );
 
     }

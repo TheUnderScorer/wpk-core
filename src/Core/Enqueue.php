@@ -2,7 +2,6 @@
 
 namespace UnderScorer\Core;
 
-use Illuminate\Support\Str;
 use UnderScorer\Core\Utility\Strings;
 
 /**
@@ -151,8 +150,7 @@ class Enqueue
     public function enqueueScripts()
     {
 
-        $scripts = array_filter( $this->scripts, function ( $item )
-        {
+        $scripts = array_filter( $this->scripts, function ( $item ) {
             return ! $item[ 'admin' ];
         } );
 
@@ -220,8 +218,7 @@ class Enqueue
     public function adminEnqueueScripts()
     {
 
-        $scripts = array_filter( $this->scripts, function ( $item )
-        {
+        $scripts = array_filter( $this->scripts, function ( $item ) {
             return $item[ 'admin' ];
         } );
 
@@ -325,8 +322,7 @@ class Enqueue
         $vars = json_encode( $vars );
         $hook = is_admin() ? 'admin_head' : 'wp_head';
 
-        $callback = function () use ( $vars, $variable )
-        {
+        $callback = function () use ( $vars, $variable ) {
             ?>
 			<script>
                 window[ '<?php echo $variable ?>' ] =; <?php echo $vars ?>

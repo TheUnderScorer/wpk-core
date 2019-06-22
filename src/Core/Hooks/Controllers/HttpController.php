@@ -2,12 +2,7 @@
 
 namespace UnderScorer\Core\Hooks\Controllers;
 
-use UnderScorer\Core\App;
-use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Middleware\HttpMiddleware;
-use UnderScorer\Core\Http\Request;
-use UnderScorer\Core\Http\Response;
-use UnderScorer\Core\Http\ResponseInterface;
 
 /**
  * @author Przemysław Żydek

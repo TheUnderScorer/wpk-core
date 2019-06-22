@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core;
 
+use Illuminate\Container\Container;
 use Symfony\Component\HttpFoundation\Session\Session;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\Controller;
@@ -15,7 +16,7 @@ use UnderScorer\Core\Storage\StorageInterface;
  *
  * @author Przemysław Żydek
  */
-class App implements AppInterface
+class App extends Container implements AppInterface
 {
 
     /**
@@ -36,7 +37,7 @@ class App implements AppInterface
     /**
      * @var StorageInterface
      */
-    protected $container;
+    protected $settings;
 
     /**
      * @var string Stores path to this plugin directory
@@ -63,16 +64,14 @@ class App implements AppInterface
      *
      * @param string            $slug Plugin slug
      * @param string            $file Main plugin file
-     * @param StorageInterface  $container Container for modules
-     * @param Settings          $settings Settings instance
+     * @param StorageInterface  $settings Settings instance
      * @param Request           $request
      * @param ResponseInterface $response
      */
     public function __construct(
         string $slug,
         string $file,
-        StorageInterface $container,
-        Settings $settings,
+        StorageInterface $settings,
         Request $request = null,
         ResponseInterface $response = null
     ) {
@@ -89,15 +88,14 @@ class App implements AppInterface
             $response = new Response;
         }
 
-        $this->slug      = $slug;
-        $this->file      = empty( $file ) ? __FILE__ : $file;
-        $this->url       = plugin_dir_url( $this->file );
-        $this->dir       = plugin_dir_path( $this->file );
-        $this->container = $container;
-        $this->request   = $request;
-        $this->response  = $response;
+        $this->slug     = $slug;
+        $this->file     = empty( $file ) ? __FILE__ : $file;
+        $this->url      = plugin_dir_url( $this->file );
+        $this->dir      = plugin_dir_path( $this->file );
+        $this->request  = $request;
+        $this->response = $response;
+        $this->settings = $settings;
 
-        $this->container->add( $settings, 'settings' );
 
         do_action( 'wpk/core/loaded', $this );
         do_action( "wpk/core/$this->slug/loaded", $this );
@@ -170,14 +168,6 @@ class App implements AppInterface
     }
 
     /**
-     * @return StorageInterface
-     */
-    public function getContainer(): StorageInterface
-    {
-        return $this->container;
-    }
-
-    /**
      * @return string
      */
     public function getFile(): string
@@ -192,7 +182,7 @@ class App implements AppInterface
      */
     public function getSetting( string $key )
     {
-        return $this->getSettings()->get( $key );
+        return $this->settings->get( $key );
     }
 
     /**
@@ -200,7 +190,7 @@ class App implements AppInterface
      */
     public function getSettings(): Settings
     {
-        return $this->container->get( 'settings' );
+        return $this->settings;
     }
 
     /**
@@ -211,7 +201,7 @@ class App implements AppInterface
      */
     public function setSetting( string $key, $value )
     {
-        return $this->getSettings()->update( $key, $value );
+        return $this->settings->update( $key, $value );
     }
 
 }

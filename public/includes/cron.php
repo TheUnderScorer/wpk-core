@@ -1,18 +1,20 @@
 <?php
 
-use UnderScorer\Core\App;
+use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Cron\CronTask;
 use UnderScorer\Core\Cron\RecurrentSchedule;
 use UnderScorer\Core\Utility\Date;
 
+
 /**
- * @param App $app
+ * @param AppInterface $app
  *
  * @return void
  * @throws Exception
  *
  */
-function registerCrons( App $app ): void {
+function registerCrons( AppInterface $app ): void
+{
 
     $config = $app->getPath( 'config' );
     $crons  = require $config . 'schedules.php';
@@ -24,9 +26,7 @@ function registerCrons( App $app ): void {
 
         $controllers = $item[ 'controllers' ];
 
-        $app->getContainer()->add(
-            new CronTask( $app, $hook, $controllers ), $hook
-        );
+        $app->singleton($hook, new CronTask( $app, $hook, $controllers ));
 
     }
 

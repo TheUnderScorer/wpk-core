@@ -1,22 +1,18 @@
 <?php
 
-use Symfony\Component\Filesystem\Filesystem;
 use SuperClosure\Serializer;
 use UnderScorer\Core\Admin\Menu;
-use UnderScorer\Core\Admin\Notices;
-use UnderScorer\Core\App;
+use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Cron\Queue\Queue;
 use UnderScorer\Core\Enqueue;
-use UnderScorer\Core\Storage\Cache;
+use UnderScorer\Core\Providers\ServiceProvider;
 use UnderScorer\Core\Storage\ServiceContainer;
-use UnderScorer\Core\View;
 
 function requireFiles( string $includes ): void
 {
 
     require_once $includes . 'http.php';
     require_once $includes . 'enqueue.php';
-    require_once $includes . 'cache.php';
     require_once $includes . 'install.php';
     require_once $includes . 'cron.php';
     require_once $includes . 'acf.php';
@@ -27,53 +23,40 @@ function requireFiles( string $includes ): void
 /**
  * Handles plugin installation process
  *
- * @param App $app
+ * @param AppInterface $app
  *
  * @throws Exception
  *
  */
-function install( App $app )
+function install( AppInterface $app )
 {
-
-    $container = $app->getContainer();
 
     $includes = $app->getPath( 'includes' );
     $config   = $app->getPath( 'config' );
 
-    $fileSystem = new Filesystem();
-    $enqueue    = new Enqueue( $app->getSlug(), $app->getUrl( 'public' ) );
-    $serializer = new Serializer();
-    $view       = new View( $fileSystem, $app->getPath( 'views' ) );
-    $notices    = new Notices( $view );
+    $providers = require $config . '/providers.php';
 
-    // Set app instance in helper classes
-    Cache::setApp( $app );
+    foreach ( $providers as $providerClass ) {
+        /**
+         * @var ServiceProvider $provider
+         */
+        $provider = new $providerClass( $app );
+
+        $provider->register();
+    }
+
+    /**
+     * @var Enqueue $enqueue
+     */
+    $enqueue = $app->make( Enqueue::class );
 
     // Include required files
     requireFiles( $includes );
 
-    Queue::setSerializer( $serializer );
+    Queue::setSerializer( $app->make( Serializer::class ) );
 
     // Load core scripts and styles
     enqueue( $enqueue );
-
-    // Bind core modules into container
-    $container->add( $serializer )
-              ->add( $enqueue )
-              ->add( $notices )
-              ->add( $view )
-              ->add( $fileSystem );
-
-    // Add core menu
-    $container->add( new Menu( 'wpk_core', [
-        'pageTitle' => esc_html__( 'Core' ),
-        'menuTitle' => esc_html__( 'Core' ),
-        'icon'      => $enqueue->getAssetsPath( 'img/kraken.png' ),
-        'callback'  => function ()
-        {
-            do_action( 'wpk/core/menu' );
-        },
-    ] ) );
 
     // Register cron tasks
     registerCrons( $app );

@@ -2,7 +2,9 @@
 
 namespace UnderScorer\Core\Hooks\Controllers;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use UnderScorer\Core\Contracts\AppInterface;
+use UnderScorer\Core\Contracts\ViewRenderInterface;
 use UnderScorer\Core\Hooks\Middleware\Middleware;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\Response;
@@ -120,6 +122,7 @@ abstract class Controller
      * @param array  $data
      *
      * @return string
+     * @throws BindingResolutionException
      */
     protected function render( string $path, array $data = [] ): string
     {
@@ -127,7 +130,7 @@ abstract class Controller
         /**
          * @var View $view
          */
-        $view = $this->app->getContainer()->get( View::class );
+        $view = $this->app->make( ViewRenderInterface::class );
 
         return $view->render( $path, $data );
 

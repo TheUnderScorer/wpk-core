@@ -2,49 +2,24 @@
 
 namespace UnderScorer\Core\Hooks\Controllers\Admin;
 
-use UnderScorer\Core\Admin\AdminMenuHandler;
+use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use UnderScorer\Core\Admin\Menu;
-use UnderScorer\Core\App;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Utility\Logger;
-use function UnderScorer\Core\view;
 
 /**
  * @author Przemysław Żydek
  */
-class LogsMenu extends Controller implements AdminMenuHandler
+class LogsMenu extends Controller
 {
 
     /**
-     * @param App $core
-     */
-    public function handle( App $core ): void
-    {
-
-        if ( $core->getSlug() !== 'wpk' ) {
-            return;
-        }
-
-        /**
-         * @var Menu $coreMenu
-         */
-        $coreMenu = $core->getContainer()->get( Menu::class );
-
-        $core->getContainer()->add(
-            new Menu( 'wpk_logs', [
-                'pageTitle' => 'Logs',
-                'menuTitle' => 'Logs',
-                'callback'  => [ $this, 'menu' ],
-            ], $coreMenu ),
-            'wpk_logs'
-        );
-
-    }
-
-    /**
      * @return void
+     * @throws BindingResolutionException
+     *
      */
-    public function menu(): void
+    public function handle(): void
     {
 
         $data = [
@@ -59,10 +34,28 @@ class LogsMenu extends Controller implements AdminMenuHandler
      * Performs controller setup
      *
      * @return void
+     * @throws BindingResolutionException
      */
     protected function setup(): void
     {
-        add_action( 'wpk/core/loaded', [ $this, 'handle' ], 11 );
-    }
 
+        if ( $this->app->getSlug() !== CORE_SLUG ) {
+            return;
+        }
+
+        /**
+         * @var Menu $coreMenu
+         */
+        $coreMenu = $this->app->make( Menu::class );
+
+        try {
+            $coreMenu->addSubmenu( 'wpk_logs', [
+                'pageTitle' => 'Logs',
+                'menuTitle' => 'Logs',
+                'callback'  => [ $this, 'handle' ],
+            ] );
+        } catch ( Exception $e ) {
+
+        }
+    }
 }
