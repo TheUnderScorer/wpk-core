@@ -21,7 +21,6 @@ final class PostRemovalHandlerTest extends TestCase
      */
     public function testIsRemovingPostOnTime()
     {
-
         $postID = $this->factory()->post->create();
 
         do_action( PostCleaner::getCron()->getHook(), $postID );
@@ -29,7 +28,6 @@ final class PostRemovalHandlerTest extends TestCase
         $post = Post::query()->find( $postID );
 
         $this->assertEmpty( $post );
-
     }
 
 }
