@@ -5,7 +5,7 @@ namespace UnderScorer\Core\Tests\Core\Hooks\Controllers\Cleaners;
 use Exception;
 use UnderScorer\Core\Cron\Cleaners\PostCleaner;
 use UnderScorer\Core\Tests\TestCase;
-use UnderScorer\ORM\WP\Post;
+use UnderScorer\ORM\Models\Post;
 
 /**
  * Class PostCleanerTest
