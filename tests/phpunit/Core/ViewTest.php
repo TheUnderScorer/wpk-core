@@ -3,6 +3,7 @@
 namespace UnderScorer\Core\Tests\Core;
 
 use Symfony\Component\Filesystem\Filesystem;
+use UnderScorer\Core\Contracts\ViewRenderInterface;
 use UnderScorer\Core\Exceptions\FileException;
 use UnderScorer\Core\Tests\TestCase;
 use UnderScorer\Core\View;
@@ -16,12 +17,13 @@ final class ViewTest extends TestCase
 
     /**
      * @covers \UnderScorer\Core\View::render
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testIsRenderingProperly()
     {
 
         /** @var View $view */
-        $view = self::$app->getContainer()->get( View::class );
+        $view = self::$app->make(ViewRenderInterface::class );
 
         $output = $view->render( 'test', [ 'name' => 'Przemek' ] );
 
@@ -31,6 +33,7 @@ final class ViewTest extends TestCase
 
     /**
      * @throws FileException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
      * @covers \UnderScorer\Core\View::createCacheDirectory
      */
@@ -40,7 +43,7 @@ final class ViewTest extends TestCase
         /**
          * @var Filesystem $fileSystem
          */
-        $fileSystem = self::$app->getContainer()->get( Filesystem::class );
+        $fileSystem = self::$app->make( Filesystem::class );
 
         $cacheDir = self::$app->getPath( 'views/cache_test' );
         $this->assertFalse( $fileSystem->exists( $cacheDir ) );

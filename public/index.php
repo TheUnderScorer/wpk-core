@@ -1,9 +1,18 @@
 <?php
 
+/*
+Plugin Name: WPK Core
+Plugin URI: https://wpkraken.io/
+Description: WPK Core plugin framework
+Author: WP Przemysław Żydek
+Author URI: https://wpkraken.io/
+Version: 1.2
+Text Domain: wpk-core
+*/
+
 use UnderScorer\Core\AcfSettings;
 use UnderScorer\Core\App;
 use UnderScorer\Core\Settings;
-use UnderScorer\Core\Storage\ServiceContainer;
 
 if ( ! defined( 'CORE_SLUG' ) ) {
     define( 'CORE_SLUG', 'wpk' );
@@ -31,7 +40,6 @@ try {
     $app = new App(
         $slug,
         __FILE__,
-        new ServiceContainer,
         $settings
     );
 

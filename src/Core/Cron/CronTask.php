@@ -3,6 +3,7 @@
 namespace UnderScorer\Core\Cron;
 
 use UnderScorer\Core\App;
+use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\Cron\CronController;
 
 /**
@@ -31,11 +32,11 @@ class CronTask implements CronInterface
     /**
      * Schedule constructor.
      *
-     * @param App              $app
+     * @param AppInterface     $app
      * @param string           $hook
      * @param CronController[] $controllers
      */
-    public function __construct( App $app, string $hook, array $controllers )
+    public function __construct( AppInterface $app, string $hook, array $controllers )
     {
         $this->hook        = $hook;
         $this->controllers = $controllers;

@@ -5,7 +5,7 @@ namespace UnderScorer\Core\Tests\Core\Hooks\Controllers\Cleaners;
 use Exception;
 use UnderScorer\Core\Cron\Cleaners\PostCleaner;
 use UnderScorer\Core\Tests\TestCase;
-use UnderScorer\ORM\WP\Post;
+use UnderScorer\ORM\Models\Post;
 
 /**
  * Class PostCleanerTest
@@ -21,7 +21,6 @@ final class PostRemovalHandlerTest extends TestCase
      */
     public function testIsRemovingPostOnTime()
     {
-
         $postID = $this->factory()->post->create();
 
         do_action( PostCleaner::getCron()->getHook(), $postID );
@@ -29,7 +28,6 @@ final class PostRemovalHandlerTest extends TestCase
         $post = Post::query()->find( $postID );
 
         $this->assertEmpty( $post );
-
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core\Hooks\Controllers\Admin;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 
 /**
@@ -12,6 +13,7 @@ class CoreMenu extends Controller
 
     /**
      * @return void
+     * @throws BindingResolutionException
      */
     public function handle(): void
     {

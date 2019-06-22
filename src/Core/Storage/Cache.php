@@ -5,9 +5,8 @@ namespace UnderScorer\Core\Storage;
 use DateInterval;
 use Illuminate\Contracts\Support\Arrayable;
 use Psr\SimpleCache\CacheInterface;
-use UnderScorer\Core\Patterns\WithGlobal;
+use UnderScorer\Core\Settings;
 use UnderScorer\Core\Utility\Arr;
-use UnderScorer\Core\WithApp;
 
 /**
  * Manages custom caching
@@ -16,9 +15,6 @@ use UnderScorer\Core\WithApp;
  */
 class Cache implements CacheInterface, Arrayable
 {
-
-    use WithGlobal,
-        WithApp;
 
     /**
      * @var bool Decides if cache is active or not
@@ -39,15 +35,27 @@ class Cache implements CacheInterface, Arrayable
     protected $transientsKeys = [];
 
     /**
+     * @var StorageInterface
+     */
+    protected $settings;
+
+    /**
      * Cache constructor.
      *
-     * @param string $prefix Unique cache identifier
-     * @param string $expiration Date parsable by strtotime()
+     * @param string                $prefix Unique cache identifier
+     * @param string                $expiration Date parsable by strtotime()
+     * @param StorageInterface|null $settings
      */
-    public function __construct( string $prefix, string $expiration = '+1 hour' )
+    public function __construct( string $prefix, string $expiration = '+1 hour', ?StorageInterface $settings = null )
     {
-        $this->prefix         = $prefix;
-        $this->expiration     = $expiration;
+        $this->prefix     = $prefix;
+        $this->expiration = $expiration;
+
+        if ( empty( $settings ) ) {
+            $settings = new Settings( $prefix );
+        }
+
+        $this->settings       = $settings;
         $this->transientsKeys = $this->getTransients();
     }
 
@@ -56,7 +64,7 @@ class Cache implements CacheInterface, Arrayable
      */
     protected function getTransients(): array
     {
-        return Arr::make( self::$app->getSetting( 'cache_transients' ) );
+        return Arr::make( $this->settings->get( 'cache_transients' ) );
     }
 
     /**
@@ -132,7 +140,7 @@ class Cache implements CacheInterface, Arrayable
      */
     protected function updateTransients(): bool
     {
-        return self::$app->setSetting( 'cache_transients', $this->transientsKeys );
+        return $this->settings->update( 'cache_transients', $this->transientsKeys );
     }
 
     /**

@@ -60,7 +60,9 @@ abstract class Module
         $this->container = $container;
         $this->app       = $app;
 
-        $app->getContainer()->add( $this );
+        $app->singleton( static::class, function () {
+            return $this;
+        } );
 
         add_action( 'plugins_loaded', function () {
 

@@ -4,7 +4,6 @@ namespace UnderScorer\Core\Hooks\Middleware;
 
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Http\Request;
-use UnderScorer\Core\Http\Response;
 use UnderScorer\Core\Http\ResponseInterface;
 
 /**
@@ -27,9 +26,9 @@ abstract class HttpMiddleware extends Middleware
     /**
      * HttpMiddleware constructor.
      *
-     * @param AppInterface $app
-     * @param Request      $request
-     * @param ResponseInterface     $response
+     * @param AppInterface      $app
+     * @param Request           $request
+     * @param ResponseInterface $response
      */
     public function __construct( AppInterface $app, Request $request = null, ResponseInterface $response = null )
     {

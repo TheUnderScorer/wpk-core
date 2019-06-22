@@ -2,15 +2,16 @@
 
 namespace UnderScorer\Core\Contracts;
 
+use ArrayAccess;
+use Illuminate\Contracts\Container\Container;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Settings;
-use UnderScorer\Core\Storage\StorageInterface;
 
 /**
  * Interface AppInterface
  * @package UnderScorer\Core\Contracts
  */
-interface AppInterface
+interface AppInterface extends Container, ArrayAccess
 {
 
     /**
@@ -47,11 +48,6 @@ interface AppInterface
      * @return string
      */
     public function getSlug(): string;
-
-    /**
-     * @return StorageInterface
-     */
-    public function getContainer(): StorageInterface;
 
     /**
      * @return string

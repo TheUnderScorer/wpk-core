@@ -79,15 +79,13 @@ class PostTypeCreator
     public function addAdminColumn( string $columnSlug, string $columnName, Closure $callback ): self
     {
 
-        add_filter( "manage_{$this->slug}_posts_columns", function ( $columns = [] ) use ( $columnSlug, $columnName )
-        {
+        add_filter( "manage_{$this->slug}_posts_columns", function ( $columns = [] ) use ( $columnSlug, $columnName ) {
             $columns[ $columnSlug ] = $columnName;
 
             return $columns;
         } );
 
-        add_action( "manage_{$this->slug}_posts_custom_column", function ( $column, $postId ) use ( $callback, $columnSlug )
-        {
+        add_action( "manage_{$this->slug}_posts_custom_column", function ( $column, $postId ) use ( $callback, $columnSlug ) {
             if ( $column === $columnSlug ) {
                 $callback( $postId );
             }
@@ -113,32 +111,28 @@ class PostTypeCreator
         ];
 
         // Add column to view
-        add_filter( "manage_{$this->slug}_posts_columns", function ( $columns = [] ) use ( $columnSlug, $columnName )
-        {
+        add_filter( "manage_{$this->slug}_posts_columns", function ( $columns = [] ) use ( $columnSlug, $columnName ) {
             $columns[ $columnSlug ] = $columnName;
 
             return $columns;
         } );
 
         // Make column sortable
-        add_filter( "manage_edit-{$this->slug}_sortable_columns", function ( $columns = [] ) use ( $columnSlug, $columnName )
-        {
+        add_filter( "manage_edit-{$this->slug}_sortable_columns", function ( $columns = [] ) use ( $columnSlug, $columnName ) {
             $columns[ $columnSlug ] = $columnSlug;
 
             return $columns;
         } );
 
         // Callback for column content
-        add_action( "manage_{$this->slug}_posts_custom_column", function ( $column, $postId ) use ( $contentCallback, $columnSlug )
-        {
+        add_action( "manage_{$this->slug}_posts_custom_column", function ( $column, $postId ) use ( $contentCallback, $columnSlug ) {
             if ( $column === $columnSlug ) {
                 $contentCallback( $postId );
             }
         }, 10, 2 );
 
         // Ordering
-        add_action( 'pre_get_posts', function ( WP_Query $query ) use ( $args )
-        {
+        add_action( 'pre_get_posts', function ( WP_Query $query ) use ( $args ) {
 
             if ( ! is_admin() ) {
                 return;
@@ -170,8 +164,7 @@ class PostTypeCreator
     public function removeAdminColumn( string $columnSlug ): self
     {
 
-        add_filter( "manage_{$this->slug}_posts_columns", function ( $columns = [] ) use ( $columnSlug )
-        {
+        add_filter( "manage_{$this->slug}_posts_columns", function ( $columns = [] ) use ( $columnSlug ) {
             unset( $columns[ $columnSlug ] );
 
             return $columns;
@@ -191,15 +184,13 @@ class PostTypeCreator
     public function addBulkAction( string $action, string $label, Closure $callback ): self
     {
 
-        add_filter( "bulk_actions-edit-{$this->slug}", function ( $actions ) use ( $action, $label )
-        {
+        add_filter( "bulk_actions-edit-{$this->slug}", function ( $actions ) use ( $action, $label ) {
             $actions[ $action ] = $label;
 
             return $actions;
         } );
 
-        add_filter( "handle_bulk_actions-edit-{$this->slug}", function ( $redirectTo, $calledAction, $postIDS ) use ( $action, $callback )
-        {
+        add_filter( "handle_bulk_actions-edit-{$this->slug}", function ( $redirectTo, $calledAction, $postIDS ) use ( $action, $callback ) {
 
             if ( $calledAction !== $action ) {
                 return $redirectTo;

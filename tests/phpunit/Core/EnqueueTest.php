@@ -19,7 +19,7 @@ final class EnqueueTest extends TestCase
     {
 
         /** @var Enqueue $enqueue */
-        $enqueue = self::$app->getContainer()->get( Enqueue::class );
+        $enqueue = self::$app->make(Enqueue::class );
 
         $enqueue->enqueueScript()->enqueueScripts();
 

@@ -4,7 +4,7 @@ namespace UnderScorer\Core\Utility;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use UnderScorer\ORM\WP\Post;
+use UnderScorer\ORM\Models\Post;
 
 /**
  * @author Przemysław Żydek

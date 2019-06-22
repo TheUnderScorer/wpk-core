@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core\Hooks\Controllers\Queue;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use SuperClosure\Serializer;
 use UnderScorer\Core\Cron\Queue\Queue;
 use UnderScorer\Core\Hooks\Controllers\Cron\CronController;
@@ -26,6 +27,7 @@ class HandleQueue extends CronController
      * @param string $serializedClosure
      *
      * @return void
+     * @throws BindingResolutionException
      */
     public function handle( string $serializedClosure = '' ): void
     {
@@ -35,7 +37,7 @@ class HandleQueue extends CronController
         }
 
         /** @var Serializer $serializer */
-        $serializer = $this->app->getContainer()->get( Serializer::class );
+        $serializer = $this->app->make( Serializer::class );
 
         $closure = $serializer->unserialize( $serializedClosure );
 
