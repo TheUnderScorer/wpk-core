@@ -8,7 +8,6 @@ use UnderScorer\Core\Hooks\Controllers;
 
 return [
     Controllers\Admin\DebugMenu::class,
-    Controllers\Admin\LogsMenu::class,
     Controllers\Admin\CoreMenu::class,
 
     Controllers\Http\GetCoreVersionHandler::class,

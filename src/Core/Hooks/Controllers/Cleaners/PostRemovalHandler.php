@@ -2,9 +2,9 @@
 
 namespace UnderScorer\Core\Hooks\Controllers\Cleaners;
 
+use Psr\Log\LoggerInterface;
 use UnderScorer\Core\Cron\Cleaners\PostCleaner;
 use UnderScorer\Core\Hooks\Controllers\Cron\CronController;
-use UnderScorer\Core\Utility\Logger;
 
 /**
  * @author Przemysław Żydek
@@ -26,15 +26,20 @@ class PostRemovalHandler extends CronController
      * @param int $postID
      *
      * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function handle( int $postID = 0 ): void
     {
+        /**
+         * @var LoggerInterface $logger
+         */
+        $logger = $this->app->make( LoggerInterface::class );
 
         if ( ! $postID ) {
             return;
         }
 
-        Logger::log( "Attempting to remove post with id $postID", __METHOD__ );
+        $logger->notice( "Attempting to remove post with id $postID", [ __METHOD__ ] );
 
         $result = wp_delete_post( $postID, true );
 
@@ -44,7 +49,7 @@ class PostRemovalHandler extends CronController
             $message = 'Post could not be removed.';
         }
 
-        Logger::log( $message, __METHOD__ );
+        $logger->notice( $message, [ __METHOD__ ] );
 
     }
 
