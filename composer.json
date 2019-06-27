@@ -40,5 +40,8 @@
     "psr-4": {
       "UnderScorer\\Core\\Tests\\": "tests/phpunit"
     }
-  }
+  },
+  "bin": [
+    "bin/wpk-core"
+  ]
 }
