@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Filesystem\Filesystem;
+use UnderScorer\Core\Cli\Commands\InstallCommand;
+
+$rootDir = realpath( __DIR__ . '/..' );
+
+require_once $rootDir . '../vendor/autoload.php';
+
+$filesystem = new Filesystem();
+
+$app = new Application();
+$app->add( new InstallCommand( $filesystem, $rootDir ) );
+
+try {
+    $app->run();
+} catch ( Exception $e ) {
+    echo "Error occured: {$e->getMessage()}";
+
+    exit( 1 );
+}
