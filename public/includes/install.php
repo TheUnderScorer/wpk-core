@@ -1,7 +1,6 @@
 <?php
 
 use SuperClosure\Serializer;
-use UnderScorer\Core\Admin\Menu;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Cron\Queue\Queue;
 use UnderScorer\Core\Enqueue;
@@ -70,9 +69,11 @@ function install( AppInterface $app )
     // Load core controllers
     $controllers = require_once $config . 'controllers.php';
 
-    add_action( 'plugins_loaded', function () use ( $app, $controllers )
-    {
+    add_action( 'plugins_loaded', function () use ( $app, $controllers ) {
         $app->loadControllers( $controllers );
     } );
+
+    $dotenv = \Dotenv\Dotenv::create( $app->getPath( '' ) );
+    $dotenv->load();
 
 }
