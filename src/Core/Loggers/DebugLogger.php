@@ -39,7 +39,7 @@ class DebugLogger implements LoggerInterface
         do_action( "wpk/core/log/$level", $level, $message, $context, $this );
         do_action( 'wpk/core/log', $level, $message, $context, $this );
 
-        $now = Date::now()->toDateString();
+        $now = Date::now()->toDateTimeString();
         $log = "$now [$level]";
 
         if ( empty( $context ) ) {
