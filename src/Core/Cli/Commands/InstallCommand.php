@@ -17,17 +17,7 @@ class InstallCommand extends BaseCommand
     /**
      * @var string
      */
-    const PLUGIN_NAME = 'plugin_name';
-
-    /**
-     * @var string
-     */
     const PLUGIN_DIR = 'plugin_dir';
-
-    /**
-     * @var string
-     */
-    const PLUGIN_DESCRIPTION = 'plugin_description';
 
     /**
      * @var string
@@ -47,12 +37,12 @@ class InstallCommand extends BaseCommand
     /**
      * @var string
      */
-    protected $pluginName = '';
+    protected $pluginName = 'WPK Core';
 
     /**
      * @var string
      */
-    protected $pluginDescription = '';
+    protected $pluginDescription = 'WPK Core plugin';
 
     /**
      * @return void
@@ -63,19 +53,9 @@ class InstallCommand extends BaseCommand
             ->setName( $this->commandName )
             ->setDescription( $this->commandDescription )
             ->addArgument(
-                self::PLUGIN_NAME,
-                InputArgument::REQUIRED,
-                'Enter plugin name: '
-            )
-            ->addArgument(
-                self::PLUGIN_DESCRIPTION,
-                InputArgument::REQUIRED,
-                'Enter plugin description: '
-            )
-            ->addArgument(
                 self::PLUGIN_DIR,
                 InputArgument::OPTIONAL,
-                'Enter plugin directory [default: wpk-core]',
+                'Plugin directory name',
                 'wpk-core'
             );
     }
@@ -89,25 +69,13 @@ class InstallCommand extends BaseCommand
     protected function execute( InputInterface $input, OutputInterface $output )
     {
         $this->targetDir         = getcwd() . '/' . $input->getArgument( self::PLUGIN_DIR );
-        $this->pluginDescription = $input->getArgument( self::PLUGIN_DESCRIPTION );
-        $this->pluginName        = $input->getArgument( self::PLUGIN_NAME );
 
         $output->writeln( "Creating plugin files at {$this->targetDir}" );
 
         $this->createTargetDir();
         $this->copyPlugin();
 
-        $output->writeln( 'Setting up plugin...' );
-
-        $result = $this->setupPlugin();
-
-        if ( $result ) {
-            $output->writeln( 'Plugin created!' );
-        } else {
-            $output->writeln( 'Unable to create plugin.', Output::VERBOSITY_VERY_VERBOSE );
-        }
-
-        return $result;
+        $output->writeln( 'Plugin created!' );
     }
 
     /**
@@ -136,31 +104,6 @@ class InstallCommand extends BaseCommand
     protected function getPluginDir(): string
     {
         return $this->rootDir . '/public';
-    }
-
-    /**
-     * @return bool
-     */
-    protected function setupPlugin()
-    {
-        $targetDir = $this->targetDir;
-
-        $indexFile    = $targetDir . '/index.php';
-        $indexContent = file_get_contents( $indexFile );
-
-        $indexContent = str_replace(
-            'Plugin Name: WPK Core',
-            "Plugin Name: $this->pluginName",
-            $indexContent
-        );
-
-        $indexContent = str_replace(
-            'Description: WPK Core plugin framework',
-            "Description: $this->pluginDescription",
-            $indexContent
-        );
-
-        return (bool) file_put_contents( $indexFile, $indexContent );
     }
 
 }
