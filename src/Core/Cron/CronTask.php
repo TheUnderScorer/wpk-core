@@ -50,11 +50,11 @@ class CronTask implements CronInterface
      */
     private function setupControllers(): void
     {
-
         foreach ( $this->controllers as $controller ) {
-            new $controller( $this->app, $this );
-        }
+            $instance = new $controller( $this->app, $this );
 
+            $this->app->setupController( $instance );
+        }
     }
 
     /**
