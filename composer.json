@@ -42,6 +42,6 @@
     }
   },
   "bin": [
-    "bin/wpk-core"
+    "wpk-core"
   ]
 }

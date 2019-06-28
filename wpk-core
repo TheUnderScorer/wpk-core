@@ -5,9 +5,19 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
 use UnderScorer\Core\Cli\Commands\InstallCommand;
 
-$rootDir = realpath( __DIR__ . '/..' );
+$rootDir = realpath( __DIR__ . '/wpk-core' );
 
-require_once $rootDir . '../vendor/autoload.php';
+$paths   = [
+    $rootDir . '../vendor/autoload.php',
+    $rootDir . '../../../autoload.php',
+];
+
+foreach ( $paths as $path ) {
+    if ( file_exists( $path ) ) {
+        require $path;
+        break;
+    }
+}
 
 $filesystem = new Filesystem();
 
