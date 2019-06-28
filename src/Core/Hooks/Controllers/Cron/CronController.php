@@ -2,7 +2,7 @@
 
 namespace UnderScorer\Core\Hooks\Controllers\Cron;
 
-use UnderScorer\Core\App;
+use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Cron\CronInterface;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 
@@ -13,20 +13,15 @@ abstract class CronController extends Controller
 {
 
     /**
-     * @var App
-     */
-    protected $app;
-
-    /**
      * @var CronInterface
      */
     protected $cron;
 
     /**
-     * @param App           $app
+     * @param AppInterface  $app
      * @param CronInterface $cron
      */
-    public function __construct( App $app, CronInterface $cron )
+    public function __construct( AppInterface $app, CronInterface $cron )
     {
         $this->cron = $cron;
 
@@ -37,6 +32,26 @@ abstract class CronController extends Controller
      * @return void
      */
     abstract public function handle(): void;
+
+    /**
+     * @return CronInterface
+     */
+    public function getCron(): CronInterface
+    {
+        return $this->cron;
+    }
+
+    /**
+     * @param CronInterface $cron
+     *
+     * @return CronController
+     */
+    public function setCron( CronInterface $cron ): CronController
+    {
+        $this->cron = $cron;
+
+        return $this;
+    }
 
     /**
      * @return void
