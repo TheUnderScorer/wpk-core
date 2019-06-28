@@ -25,7 +25,7 @@ class CronTask implements CronInterface
     protected $controllers = [];
 
     /**
-     * @var App
+     * @var AppInterface
      */
     protected $app;
 
