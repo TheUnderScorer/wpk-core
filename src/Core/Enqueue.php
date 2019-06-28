@@ -325,7 +325,7 @@ class Enqueue
         $callback = function () use ( $vars, $variable ) {
             ?>
 			<script>
-                window[ '<?php echo $variable ?>' ] =; <?php echo $vars ?>
+                window[ '<?php echo $variable ?>' ] = <?php echo $vars ?>
 			</script>
             <?php
         };
