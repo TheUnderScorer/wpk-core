@@ -109,14 +109,12 @@ class App extends Container implements AppInterface
      */
     public function loadControllers( array $controllers ): void
     {
-
         foreach ( $controllers as $controller ) {
 
             $instance = new $controller( $this );
             $this->setupController( $instance );
 
         }
-
     }
 
     /**
@@ -128,11 +126,13 @@ class App extends Container implements AppInterface
      */
     public function setupController( Controller $controller ): void
     {
-
         $controller
             ->setRequest( $this->request )
             ->setResponse( $this->response );
 
+        $this->singleton( get_class( $controller ), function () use ( $controller ) {
+            return $controller;
+        } );
     }
 
     /**
