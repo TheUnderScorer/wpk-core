@@ -3,7 +3,7 @@
 namespace UnderScorer\Core\Cron\Cleaners;
 
 use DateTimeInterface;
-use UnderScorer\Core\Cron\CronInterface;
+use UnderScorer\Core\Cron\HasCronStatic;
 
 /**
  * @author Przemysław Żydek
@@ -11,10 +11,7 @@ use UnderScorer\Core\Cron\CronInterface;
 class PostCleaner
 {
 
-    /**
-     * @var CronInterface Stores cron instance for cleaner
-     */
-    protected static $cron;
+    use HasCronStatic;
 
     /**
      * @param int               $postID
@@ -25,22 +22,6 @@ class PostCleaner
     public static function add( int $postID, DateTimeInterface $when ): void
     {
         self::$cron->scheduleSingleEvent( $when->getTimestamp(), [ $postID ] );
-    }
-
-    /**
-     * @return CronInterface
-     */
-    public static function getCron(): CronInterface
-    {
-        return self::$cron;
-    }
-
-    /**
-     * @param CronInterface $cron
-     */
-    public static function setCron( CronInterface $cron ): void
-    {
-        self::$cron = $cron;
     }
 
 }

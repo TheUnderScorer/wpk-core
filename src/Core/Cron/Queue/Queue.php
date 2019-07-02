@@ -5,7 +5,7 @@ namespace UnderScorer\Core\Cron\Queue;
 use Closure;
 use DateTimeInterface;
 use SuperClosure\Serializer;
-use UnderScorer\Core\Cron\CronInterface;
+use UnderScorer\Core\Cron\HasCronStatic;
 
 /**
  * Utility for queuing tasks
@@ -15,10 +15,7 @@ use UnderScorer\Core\Cron\CronInterface;
 class Queue
 {
 
-    /**
-     * @var CronInterface Stores cron instance for queue
-     */
-    protected static $cron;
+    use HasCronStatic;
 
     /**
      * @var Serializer $serializer
@@ -44,22 +41,6 @@ class Queue
 
         return $serializedClosure;
 
-    }
-
-    /**
-     * @return CronInterface
-     */
-    public static function getCron(): CronInterface
-    {
-        return self::$cron;
-    }
-
-    /**
-     * @param CronInterface $cron
-     */
-    public static function setCron( CronInterface $cron ): void
-    {
-        self::$cron = $cron;
     }
 
     /**
