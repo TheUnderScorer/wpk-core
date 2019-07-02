@@ -7,7 +7,6 @@ use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Contracts\ViewRenderInterface;
 use UnderScorer\Core\Hooks\Middleware\Middleware;
 use UnderScorer\Core\Http\Request;
-use UnderScorer\Core\Http\Response;
 use UnderScorer\Core\Http\ResponseInterface;
 use UnderScorer\Core\Utility\Arr;
 use UnderScorer\Core\View;
@@ -86,11 +85,11 @@ abstract class Controller
     }
 
     /**
-     * @param Response $response
+     * @param ResponseInterface $response
      *
      * @return HttpController
      */
-    public function setResponse( Response $response ): self
+    public function setResponse( ResponseInterface $response ): self
     {
         $this->response = $response;
 
