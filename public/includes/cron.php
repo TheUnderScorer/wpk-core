@@ -1,8 +1,6 @@
 <?php
 
 use UnderScorer\Core\Contracts\AppInterface;
-use UnderScorer\Core\Cron\CronTask;
-use UnderScorer\Core\Cron\RecurrentSchedule;
 use UnderScorer\Core\Utility\Date;
 
 
@@ -22,29 +20,21 @@ function registerCrons( AppInterface $app ): void
     $cron               = $crons[ 'cron' ];
     $recurrentSchedules = $crons[ 'recurrentSchedules' ];
 
-    foreach ( $cron as $hook => $item ) {
-
-        $controllers = $item[ 'controllers' ];
-
-        $app->singleton($hook, new CronTask( $app, $hook, $controllers ));
-
+    foreach ( $cron as $class ) {
+        $app->singleton( $class, function ( AppInterface $app ) use ( $class ) {
+            return new $class( $app );
+        } );
+        $app->make( $class );
     }
 
-    foreach ( $recurrentSchedules as $hook => $recurrentSchedule ) {
+    foreach ( $recurrentSchedules as $class => $recurrentSchedule ) {
 
-        $controllers = $recurrentSchedule[ 'controllers' ];
-        $recurrence  = $recurrentSchedules[ 'recurrence' ] ?? 'daily';
-        $start       = $recurrentSchedule[ 'start' ] ?? new Date( '00:00' );
+        $recurrence = $recurrentSchedules[ 'recurrence' ] ?? 'daily';
+        $start      = $recurrentSchedule[ 'start' ] ?? new Date( '00:00' );
 
-        $app->getContainer()->add(
-            new RecurrentSchedule(
-                $app,
-                $hook,
-                $controllers,
-                $recurrence,
-                $start ),
-            $hook
-        );
+        $app->singleton( $class, function ( AppInterface $app ) use ( $class, $recurrence, $start ) {
+            return new $class( $app, $recurrence, $start );
+        } );
 
     }
 

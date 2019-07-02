@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core\Cron;
 
+use Exception;
 use UnderScorer\Core\App;
 use UnderScorer\Core\Hooks\Controllers\Cron\CronController;
 use UnderScorer\Core\Utility\Date;
@@ -38,12 +39,14 @@ class RecurrentSchedule extends CronTask
      * Schedule constructor.
      *
      * @param App              $app
-     * @param string           $hook
-     * @param CronController[] $controllers
      * @param string           $recurrence
      * @param Date             $start Date on which first event will be scheduled
+     * @param string           $hook
+     * @param CronController[] $controllers
+     *
+     * @throws Exception
      */
-    public function __construct( App $app, string $hook, array $controllers, string $recurrence, Date $start = null )
+    public function __construct( App $app, string $recurrence, Date $start = null, string $hook = '', array $controllers = [] )
     {
 
         parent::__construct( $app, $hook, $controllers );

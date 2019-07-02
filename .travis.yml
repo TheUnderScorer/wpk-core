@@ -35,3 +35,13 @@ script:
 
 after_script:
   - docker-compose down --remove-orphans
+
+deploy:
+  provider: releases
+  api_key:
+    secure: $GITHUB_API_KEY
+  skip_cleanup: true
+  on:
+    repo: TheUnderScorer/wpk-core
+    tags: true
+    branch: master
