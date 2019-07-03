@@ -3,6 +3,7 @@
 namespace UnderScorer\Core\Contracts;
 
 use ArrayAccess;
+use Closure;
 use Illuminate\Contracts\Container\Container;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Settings;
@@ -73,5 +74,23 @@ interface AppInterface extends Container, ArrayAccess
      * @return mixed
      */
     public function setSetting( string $key, $value );
+
+    /**
+     * Registers callback that will trigger on plugin activation
+     *
+     * @param Closure $callback
+     *
+     * @return void
+     */
+    public function onActivation( Closure $callback ): void;
+
+    /**
+     * Registers callback that will trigger on plugin deactivation
+     *
+     * @param Closure $callback
+     *
+     * @return void
+     */
+    public function onDeactivation( Closure $callback ): void;
 
 }

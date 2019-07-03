@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core;
 
+use Closure;
 use Illuminate\Container\Container;
 use Symfony\Component\HttpFoundation\Session\Session;
 use UnderScorer\Core\Contracts\AppInterface;
@@ -204,4 +205,31 @@ class App extends Container implements AppInterface
         return $this->settings->update( $key, $value );
     }
 
+    /**
+     * Registers callback that will trigger on plugin activation
+     *
+     * @param Closure $callback
+     *
+     * @return void
+     */
+    public function onActivation( Closure $callback ): void
+    {
+        register_activation_hook( $this->file, function () use ( $callback ) {
+            $callback( $this );
+        } );
+    }
+
+    /**
+     * Registers callback that will trigger on plugin deactivation
+     *
+     * @param Closure $callback
+     *
+     * @return void
+     */
+    public function onDeactivation( Closure $callback ): void
+    {
+        register_deactivation_hook( $this->file, function () use ( $callback ) {
+            $callback( $this );
+        } );
+    }
 }
