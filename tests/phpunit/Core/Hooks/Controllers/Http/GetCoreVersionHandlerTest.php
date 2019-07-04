@@ -18,11 +18,9 @@ class GetCoreVersionHandlerTest extends HttpTestCase
      */
     public function testIsReturningCoreVersion(): void
     {
-
-        $response = new BaseResponse( $this->makeAjaxCall( GetCoreVersionHandler::class ) );
+        $response = new BaseResponse( json_decode( $this->makeAjaxCall( GetCoreVersionHandler::class ), true ) );
 
         $this->assertEquals( CORE_VERSION, $response->result );
-
     }
 
 }

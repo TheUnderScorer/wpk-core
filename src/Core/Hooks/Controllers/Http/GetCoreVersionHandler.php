@@ -26,12 +26,10 @@ class GetCoreVersionHandler extends HttpController
      */
     public function handle(): void
     {
-
         $response         = new BaseResponse();
         $response->result = CORE_VERSION;
 
-        $this->response->send( $response );
-
+        $this->response->setContent( $response )->json();
     }
 
 }

@@ -2,52 +2,65 @@
 
 namespace UnderScorer\Core\Http;
 
-use UnderScorer\Core\Http\ResponseTemplates\ResponseTemplateInterface;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 interface ResponseInterface
 {
 
     /**
-     * Sends json with provided response template
+     * Sends response
      *
-     * @param ResponseTemplateInterface $response
-     *
-     * @return void
+     * @return mixed
      */
-    public function send( ResponseTemplateInterface $response ): void;
+    public function send();
 
     /**
-     * @param string $view
+     * Sends response as json
+     *
+     * @return mixed
      */
-    public function render( string $view ): void;
+    public function json();
 
     /**
      * Redirects user to provided url
      *
-     * @return void
-     */
-    public function redirect(): void;
-
-    /**
-     * Set redirect url
-     *
      * @param string $url
      *
-     * @return static
+     * @return mixed
      */
-    public function setRedirectUrl( string $url );
+    public function redirect( string $url );
 
     /**
      * @return int
      */
-    public function getCode(): int;
+    public function getStatusCode(): int;
 
     /**
      * @param int $code
      *
      * @return static
      */
-    public function setCode( int $code );
+    public function setStatusCode( int $code );
 
+    /**
+     * @return ResponseHeaderBag
+     */
+    public function headers(): ResponseHeaderBag;
+
+    /**
+     * Sets response content
+     *
+     * @param mixed $content
+     *
+     * @return static
+     */
+    public function setContent( $content );
+
+    /**
+     * Returns response content
+     *
+     * @return mixed
+     */
+    public function getContent();
 
 }
