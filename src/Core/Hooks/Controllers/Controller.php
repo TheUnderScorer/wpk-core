@@ -9,6 +9,7 @@ use UnderScorer\Core\Hooks\Middleware\Middleware;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\ResponseInterface;
 use UnderScorer\Core\Utility\Arr;
+use UnderScorer\Core\Validation\HasValidator;
 use UnderScorer\Core\View;
 
 /**
@@ -16,6 +17,9 @@ use UnderScorer\Core\View;
  */
 abstract class Controller
 {
+
+    use HasValidator;
+
     /**
      * @var ResponseInterface
      */
