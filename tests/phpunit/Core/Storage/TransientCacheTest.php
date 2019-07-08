@@ -8,16 +8,16 @@ use UnderScorer\Core\Tests\TestCase;
  * Class CacheTest
  * @package UnderScorer\Core\Storage
  */
-final class CacheTest extends TestCase
+final class TransientCacheTest extends TestCase
 {
 
     /**
-     * @var Cache
+     * @var TransientCache
      */
     protected $cache;
 
     /**
-     * @covers \UnderScorer\Core\Storage\Cache::set
+     * @covers \UnderScorer\Core\Storage\TransientCache::set
      */
     public function testIsCachingAnyValue()
     {
@@ -31,7 +31,7 @@ final class CacheTest extends TestCase
     }
 
     /**
-     * @covers \UnderScorer\Core\Storage\Cache::delete
+     * @covers \UnderScorer\Core\Storage\TransientCache::delete
      */
     public function testIsRemovingValue()
     {
@@ -46,7 +46,7 @@ final class CacheTest extends TestCase
     }
 
     /**
-     * @covers \UnderScorer\Core\Storage\Cache::delete
+     * @covers \UnderScorer\Core\Storage\TransientCache::delete
      */
     public function testIsCacheValueBeingRemovedOnTime()
     {
@@ -69,7 +69,7 @@ final class CacheTest extends TestCase
     {
         parent::setUp();
 
-        $this->cache = new Cache( 'test', '+2 seconds' );
+        $this->cache = new TransientCache( 'test', '+2 seconds' );
     }
 
     /**
