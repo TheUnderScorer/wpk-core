@@ -71,13 +71,11 @@ abstract class Controller
      */
     protected function loadMiddleware()
     {
-
         foreach ( $this->middleware as $key => $middleware ) {
-            $this->middleware[ $key ] = new $middleware( $this->app );
+            $this->middleware[ $key ] = new $middleware( $this->app, $this->request, $this->response );
         }
 
         return $this;
-
     }
 
     /**
@@ -149,7 +147,6 @@ abstract class Controller
      */
     protected function middleware( $middleware = null, ...$params )
     {
-
         if ( empty( $middleware ) ) {
             $middleware = array_keys( $this->middleware );
         }
@@ -161,7 +158,6 @@ abstract class Controller
         }
 
         return $this;
-
     }
 
     /**
@@ -174,7 +170,7 @@ abstract class Controller
      */
     private function callMiddleware( Middleware $middleware, array $params = [] ): void
     {
-        call_user_func_array( [ $middleware, 'handle' ], $params );
+        $middleware->handle( ...$params );
     }
 
 }
