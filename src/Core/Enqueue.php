@@ -41,12 +41,10 @@ class Enqueue
      */
     public function __construct( string $slug, string $assetsUrl )
     {
-
         $this->slug = $slug;
 
         $this->setupPaths( $assetsUrl );
         $this->setupHooks();
-
     }
 
     /**
@@ -58,12 +56,10 @@ class Enqueue
      */
     protected function setupPaths( $assetsUrl )
     {
-
         $this->assetsUrl = $assetsUrl;
         $this->cssUrl    = $this->getAssetsPath( 'css' );
         $this->jsUrl     = $this->getAssetsPath( 'js' );
         $this->vendorUrl = $this->getAssetsPath( 'vendor' );
-
     }
 
     /**
@@ -75,9 +71,7 @@ class Enqueue
      */
     public function getAssetsPath( $path )
     {
-
         return "{$this->assetsUrl}/$path";
-
     }
 
     /**
@@ -87,7 +81,6 @@ class Enqueue
      */
     protected function setupHooks()
     {
-
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueueStyles' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueueScripts' ] );
         add_action( 'wp_print_scripts', [ $this, 'dequeueScripts' ] );
@@ -95,7 +88,6 @@ class Enqueue
         add_action( 'admin_enqueue_scripts', [ $this, 'adminEnqueueScripts' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'adminEnqueueStyles' ] );
         add_action( 'admin_print_scripts', [ $this, 'adminDequeueScripts' ] );
-
     }
 
     /**
@@ -105,7 +97,6 @@ class Enqueue
      */
     public function enqueueStyles()
     {
-
         foreach ( $this->styles as $style ) {
 
             extract( $style );
@@ -128,7 +119,6 @@ class Enqueue
             wp_enqueue_style( $slug, $fileName, $deps, $ver );
 
         }
-
     }
 
     /**
@@ -138,8 +128,6 @@ class Enqueue
      */
     public function adminEnqueueStyles()
     {
-
-
     }
 
     /**
@@ -149,13 +137,11 @@ class Enqueue
      */
     public function enqueueScripts()
     {
-
         $scripts = array_filter( $this->scripts, function ( $item ) {
             return ! $item[ 'admin' ];
         } );
 
         $this->enqueue( $scripts );
-
     }
 
     /**
@@ -168,7 +154,6 @@ class Enqueue
      */
     protected function enqueue( array $items, string $type = 'scripts' ): self
     {
-
         foreach ( $items as $item ) {
 
             extract( $item );
@@ -207,7 +192,6 @@ class Enqueue
         }
 
         return $this;
-
     }
 
     /**
@@ -217,13 +201,11 @@ class Enqueue
      */
     public function adminEnqueueScripts()
     {
-
         $scripts = array_filter( $this->scripts, function ( $item ) {
             return $item[ 'admin' ];
         } );
 
         $this->enqueue( $scripts );
-
     }
 
     /**
@@ -235,7 +217,6 @@ class Enqueue
      */
     public function enqueueStyle( array $args = [] ): self
     {
-
         $slug = $this->slug;
 
         $args = wp_parse_args( $args, [
@@ -249,7 +230,6 @@ class Enqueue
         $this->styles[] = $args;
 
         return $this;
-
     }
 
     /**
@@ -261,7 +241,6 @@ class Enqueue
      */
     public function enqueueScript( array $args = [] ): self
     {
-
         $slug = $this->slug;
 
         $args = wp_parse_args( $args, [
@@ -286,7 +265,6 @@ class Enqueue
         }
 
         return $this;
-
     }
 
     /**
@@ -318,7 +296,6 @@ class Enqueue
      */
     public static function outputVars( array $vars, string $variable )
     {
-
         $vars = json_encode( $vars );
         $hook = is_admin() ? 'admin_head' : 'wp_head';
 
@@ -331,7 +308,6 @@ class Enqueue
         };
 
         add_action( $hook, $callback, 1 );
-
     }
 
 }

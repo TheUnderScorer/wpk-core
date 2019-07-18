@@ -2,8 +2,6 @@
 
 namespace UnderScorer\Core\Hooks\Controllers\Admin;
 
-use Exception;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use UnderScorer\Core\Admin\Menu;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 
@@ -29,28 +27,18 @@ class DebugMenu extends Controller
      * Performs controller setup
      *
      * @return void
-     * @throws BindingResolutionException
      */
     protected function setup(): void
     {
-
         if ( $this->app->getSlug() !== CORE_SLUG ) {
             return;
         }
 
-        /**
-         * @var Menu $coreMenu
-         */
-        $coreMenu = $this->app->make( Menu::class );
-
-        try {
-            $coreMenu->addSubmenu( 'wpk_debug', [
-                'pageTitle' => 'Debug',
-                'menuTitle' => 'Debug',
-                'callback'  => [ $this, 'handle' ],
-            ] );
-        } catch ( Exception $e ) {
-
-        }
+        new Menu( 'wpk_debug', [
+            'pageTitle'  => 'Debug',
+            'menuTitle'  => 'Debug',
+            'callback'   => [ $this, 'handle' ],
+            'parentSlug' => $this->app->getSlug(),
+        ] );
     }
 }

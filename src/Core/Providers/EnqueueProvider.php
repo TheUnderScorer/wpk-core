@@ -5,6 +5,10 @@ namespace UnderScorer\Core\Providers;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Enqueue;
 
+/**
+ * Class EnqueueProvider
+ * @package UnderScorer\Core\Providers
+ */
 class EnqueueProvider extends ServiceProvider
 {
 

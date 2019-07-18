@@ -45,7 +45,7 @@ require $testsDir . '/includes/bootstrap.php';
 /**
  * @var App $app
  */
-$app = require $dir . '/../../public/index.php';
+$app = require $dir . '/../../plugin/index.php';
 
 TestCase::setApp( $app );
 

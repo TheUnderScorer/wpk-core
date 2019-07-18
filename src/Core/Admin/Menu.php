@@ -67,7 +67,6 @@ class Menu
      */
     public function __construct( string $slug, array $args = [], Menu $parent = null )
     {
-
         $priority = 98;
 
         $this->slug = $slug;
@@ -93,7 +92,6 @@ class Menu
         }
 
         add_action( 'admin_menu', [ $this, 'register' ], $priority );
-
     }
 
     /**

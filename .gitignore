@@ -1,4 +1,4 @@
 /vendor
 /tests/phpunit/.env
-/public/views/cache
+/plugin/views/cache
 /.idea

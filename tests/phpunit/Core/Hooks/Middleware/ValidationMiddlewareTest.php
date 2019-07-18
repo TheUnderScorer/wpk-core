@@ -1,36 +1,42 @@
 <?php
 
-namespace UnderScorer\Core\Tests\Core\Validation;
+namespace UnderScorer\Tests\Core\Hooks\Middleware;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use UnderScorer\Core\Exceptions\ValidationException;
+use UnderScorer\Core\Hooks\Middleware\ValidationMiddleware;
+use UnderScorer\Core\Http\Request;
+use UnderScorer\Core\Http\Response;
 use UnderScorer\Core\Tests\TestCase;
-use UnderScorer\Core\Validation\HasValidator;
 
 /**
  * Class HasValidatorTest
  * @package UnderScorer\Core\Tests\Core\Validation
  */
-final class HasValidatorTest extends TestCase
+final class ValidationMiddlewareTest extends TestCase
 {
 
     /**
-     * @var MockObject|HasValidator
+     * @var ValidationMiddleware
      */
-    protected $mock;
+    protected $middleware;
 
     /**
-     * @throws \ReflectionException
+     * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->mock      = $this->getMockForTrait( HasValidator::class );
-        $this->mock->app = self::$app;
+        $this->middleware = new ValidationMiddleware(
+            self::$app,
+            new Request(),
+            new Response()
+        );
     }
 
+
     /**
+     * @return void
      * @throws ValidationException
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -50,6 +56,6 @@ final class HasValidatorTest extends TestCase
 
         $this->setExpectedException( ValidationException::class, 'Validation error: The Test is required, The TestArr must be array, The TestNum must be numeric' );
 
-        $this->mock->validate( $input, $rules );
+        $this->middleware->handle( $input, $rules );
     }
 }
