@@ -8,7 +8,7 @@ Plugin URI: https://wpkraken.io/
 Description: WPK Core plugin framework
 Author: WP Przemysław Żydek
 Author URI: https://wpkraken.io/
-Version: 1.2
+Version: 1.3.6
 Text Domain: wpk-core
 */
 
