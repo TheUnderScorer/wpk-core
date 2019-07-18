@@ -48,6 +48,6 @@ abstract class Middleware
      *
      * @return mixed
      */
-    abstract public function handle(...$args);
+    abstract public function handle( ...$args );
 
 }

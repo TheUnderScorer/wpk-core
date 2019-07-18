@@ -127,14 +127,12 @@ abstract class Controller
      */
     protected function render( string $path, array $data = [] ): string
     {
-
         /**
          * @var View $view
          */
         $view = $this->app->make( ViewRenderInterface::class );
 
         return $view->render( $path, $data );
-
     }
 
     /**
