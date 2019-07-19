@@ -35,38 +35,21 @@ abstract class AjaxController extends Controller
      */
     final public function handleRequest(): void
     {
-        $response      = $this->response;
-        $errorResponse = new ErrorResponseContent();
+        $response = $this->response;
+        $error    = new ErrorResponseContent();
 
         try {
             $this->handle();
         } catch ( RequestException $e ) {
-            $errorResponse->addMessage( $e->getMessage() );
-            $errorResponse->setCode( $e->getStatusCode() );
+            $error->addMessage( $e->getMessage() );
+            $error->setCode( $e->getStatusCode() );
         } catch ( ValidationException $e ) {
-
-            /**
-             * @var ErrorBag $error
-             */
-            foreach ( $e->getErrors() as $error ) {
-                foreach ( $error->all() as $errorMessage ) {
-                    $errorResponse->addMessage( $errorMessage, 'INVALID_FIELD' );
-                }
-            }
-
+            $this->parseValidationException( $error, $e );
         } catch ( Exception $e ) {
-
-            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                $errorResponse->addMessage( $e->getMessage() );
-            } else {
-                $errorResponse->addMessage(
-                    esc_html__( 'Internal server error.' )
-                );
-            }
-
+            $this->parseException( $error, $e );
         }
 
-        $response->setContent( $errorResponse )->json();
+        $response->setContent( $error )->json();
     }
 
     /**
@@ -75,11 +58,42 @@ abstract class AjaxController extends Controller
     abstract public function handle(): void;
 
     /**
+     * @param ErrorResponseContent $error
+     * @param ValidationException  $exception
+     */
+    private function parseValidationException( ErrorResponseContent $error, ValidationException $exception ): void
+    {
+        /**
+         * @var ErrorBag $errorBag
+         */
+        foreach ( $exception->getErrors() as $errorBag ) {
+            foreach ( $errorBag->all() as $errorMessage ) {
+                $error->addMessage( $errorMessage, 'INVALID_FIELD' );
+            }
+        }
+    }
+
+    /**
+     * @param ErrorResponseContent $error
+     * @param Exception            $exception
+     */
+    private function parseException( ErrorResponseContent $error, Exception $exception ): void
+    {
+        if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+            $error->addMessage( $exception->getMessage() );
+        } else {
+            $error->addMessage(
+                esc_html__( 'Internal server error.' )
+            );
+        }
+    }
+
+    /**
      * Performs controller setup
      *
      * @return void
      */
-    protected function setup(): void
+    final protected function setup(): void
     {
         add_action( "wp_ajax_$this->hook", [ $this, 'handleRequest' ] );
 
