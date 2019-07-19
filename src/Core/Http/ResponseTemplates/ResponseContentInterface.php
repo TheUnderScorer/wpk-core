@@ -8,7 +8,7 @@ use UnderScorer\Core\Exports\Jsonable;
 /**
  * @author Przemysław Żydek
  */
-interface ResponseTemplateInterface extends Arrayable, Jsonable
+interface ResponseContentInterface extends Arrayable, Jsonable
 {
 
 

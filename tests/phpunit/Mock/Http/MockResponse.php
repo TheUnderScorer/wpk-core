@@ -3,7 +3,7 @@
 namespace UnderScorer\Core\Tests\Mock\Http;
 
 use UnderScorer\Core\Http\ResponseInterface;
-use UnderScorer\Core\Http\ResponseTemplates\ResponseTemplateInterface;
+use UnderScorer\Core\Http\ResponseTemplates\ResponseContentInterface;
 
 /**
  * Class MockResponse
@@ -40,11 +40,11 @@ class MockResponse implements ResponseInterface
     /**
      * Sends json with provided response template
      *
-     * @param ResponseTemplateInterface $response
+     * @param ResponseContentInterface $response
      *
      * @return void
      */
-    public function send( ResponseTemplateInterface $response ): void
+    public function send( ResponseContentInterface $response ): void
     {
         $this->sentResponses[] = $response;
     }
