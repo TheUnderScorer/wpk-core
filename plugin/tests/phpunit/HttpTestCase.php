@@ -3,7 +3,7 @@
 namespace WPK\Tests;
 
 use UnderScorer\Core\App;
-use UnderScorer\Core\Hooks\Controllers\HttpController;
+use UnderScorer\Core\Hooks\Controllers\AjaxController;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Tests\Common\Factories\ControllerFactory;
 use WPAjaxDieContinueException;
@@ -35,7 +35,7 @@ abstract class HttpTestCase extends TestCase
     {
 
         /**
-         * @var HttpController $instance
+         * @var AjaxController $instance
          */
         $instance = parent::$controllerFactory->make( $controller );
 

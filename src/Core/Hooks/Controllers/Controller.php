@@ -86,7 +86,7 @@ abstract class Controller
     /**
      * @param ResponseInterface $response
      *
-     * @return HttpController
+     * @return AjaxController
      */
     public function setResponse( ResponseInterface $response ): self
     {
@@ -106,7 +106,7 @@ abstract class Controller
     /**
      * @param Request $request
      *
-     * @return HttpController
+     * @return AjaxController
      */
     public function setRequest( Request $request ): self
     {

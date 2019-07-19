@@ -2,12 +2,10 @@
 
 namespace UnderScorer\Core\Hooks\Controllers;
 
-use UnderScorer\Core\Hooks\Middleware\HttpMiddleware;
-
 /**
  * @author Przemysław Żydek
  */
-abstract class HttpController extends Controller
+abstract class AjaxController extends Controller
 {
 
     /**

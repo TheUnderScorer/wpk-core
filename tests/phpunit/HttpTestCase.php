@@ -2,8 +2,9 @@
 
 namespace UnderScorer\Core\Tests;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use UnderScorer\Core\App;
-use UnderScorer\Core\Hooks\Controllers\HttpController;
+use UnderScorer\Core\Hooks\Controllers\AjaxController;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Tests\Common\Factories\ControllerFactory;
 use WPAjaxDieContinueException;
@@ -30,14 +31,14 @@ abstract class HttpTestCase extends TestCase
      * @param Request $request
      *
      * @return array|null
+     * @throws BindingResolutionException
      */
     protected function makeAjaxCall( string $controller, ?Request $request = null )
     {
-
         /**
-         * @var HttpController $instance
+         * @var AjaxController $instance
          */
-        $instance = parent::$controllerFactory->make( $controller );
+        $instance = parent::$app->make( $controller );
 
         if ( $request ) {
             $instance->setRequest( $request );
