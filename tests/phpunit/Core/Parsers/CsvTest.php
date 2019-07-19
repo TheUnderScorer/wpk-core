@@ -2,18 +2,22 @@
 
 namespace UnderScorer\Core\Tests\Core\Parsers;
 
-use Exception;
-use UnderScorer\Core\Parsers\Csv;
+use UnderScorer\Core\Exceptions\CsvException;
+use UnderScorer\Core\Parsers\CsvParser;
 use UnderScorer\Core\Tests\TestCase;
 
+
 /**
- * @author Przemysław Żydek
+ * Class CsvTest
+ * @package UnderScorer\Core\Tests\Core\Parsers
  */
 final class CsvTest extends TestCase
 {
 
-    /** @var array */
-    const CSV_COLUMNS = [
+    /**
+     * @var array
+     */
+    protected $columns = [
         'firstName',
         'lastName',
         'email',
@@ -24,18 +28,19 @@ final class CsvTest extends TestCase
     ];
 
     /**
-     * @covers Csv::parse
+     * @covers CsvParser::parse
      */
     public function testIsParsingCsvFileWithExternalColumns()
     {
 
-        $path = TESTS_DIR . '/Core/Parsers/withoutColumns.csv';
+        $path   = TESTS_DIR . '/Core/Parsers/withoutColumns.csv';
+        $parser = new CsvParser( $path, ';', $this->columns );
 
-        $csv = Csv::parse( $path, ';', self::CSV_COLUMNS );
+        $csv = $parser->parse();
 
         $column = $csv[ 0 ];
 
-        foreach ( self::CSV_COLUMNS as $csvColumn ) {
+        foreach ( $this->columns as $csvColumn ) {
             $this->assertArrayHasKey( $csvColumn, $column );
         }
 
@@ -50,15 +55,15 @@ final class CsvTest extends TestCase
     }
 
     /**
-     * @covers Csv::parse
+     * @covers CsvParser::parse
+     * @throws CsvException
      */
     public function testIsThrowingExceptionOnInvalidFilePath()
     {
+        $this->setExpectedException( CsvException::class, 'Invalid CSV file provided' );
 
-        $this->setExpectedException( Exception::class, 'Invalid CSV file provided' );
-
-        Csv::parse( 'invalid path' );
-
+        $parser = new CsvParser( 'invalid' );
+        $parser->parse();
     }
 
 }
