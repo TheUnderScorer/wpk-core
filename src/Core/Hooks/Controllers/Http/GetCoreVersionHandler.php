@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core\Hooks\Controllers\Http;
 
+use UnderScorer\Core\Exceptions\RequestException;
 use UnderScorer\Core\Hooks\Controllers\AjaxController;
 use UnderScorer\Core\Http\ResponseTemplates\BaseResponse;
 

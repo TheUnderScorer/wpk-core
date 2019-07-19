@@ -24,7 +24,7 @@ class ErrorResponse extends BaseResponse
     /**
      * @var int
      */
-    protected $code = 400;
+    protected $code = 500;
 
     /**
      * @param Exception $exception
@@ -82,6 +82,46 @@ class ErrorResponse extends BaseResponse
     public function getMessages(): array
     {
         return $this->messages;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isError(): bool
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param bool $error
+     *
+     * @return self
+     */
+    public function setError( bool $error ): self
+    {
+        $this->error = $error;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCode(): int
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param int $code
+     *
+     * @return self
+     */
+    public function setCode( int $code ): self
+    {
+        $this->code = $code;
+
+        return $this;
     }
 
 }

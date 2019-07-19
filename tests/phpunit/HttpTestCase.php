@@ -30,7 +30,7 @@ abstract class HttpTestCase extends TestCase
      * @param string  $controller
      * @param Request $request
      *
-     * @return array|null
+     * @return mixed
      * @throws BindingResolutionException
      */
     protected function makeAjaxCall( string $controller, ?Request $request = null )
@@ -45,7 +45,7 @@ abstract class HttpTestCase extends TestCase
         }
 
         try {
-            $instance->handle();
+            $instance->handleRequest();
         } catch ( WPAjaxDieContinueException $e ) {
 
         }

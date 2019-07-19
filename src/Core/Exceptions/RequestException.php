@@ -2,7 +2,6 @@
 
 namespace UnderScorer\Core\Exceptions;
 
-use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 
 
@@ -18,16 +17,21 @@ class RequestException extends Exception implements Arrayable
     protected $field = '';
 
     /**
+     * @var int
+     */
+    protected $statusCode = 500;
+
+    /**
      * RequestException constructor.
      *
      * @param string $message
-     * @param string $code
+     * @param int    $statusCode
      * @param string $field
      */
-    public function __construct( $message = "", $code = 'ERROR', $field = '' )
+    public function __construct( string $message = '', int $statusCode = 500, $field = '' )
     {
-        $this->code  = $code;
-        $this->field = $field;
+        $this->statusCode = $statusCode;
+        $this->field      = $field;
 
         parent::__construct( $message );
     }
@@ -38,12 +42,27 @@ class RequestException extends Exception implements Arrayable
     public function toArray(): array
     {
         return [
-            'field'   => $this->field,
-            'message' => $this->message,
-            'code'    => $this->code,
-
+            'field'      => $this->field,
+            'message'    => $this->message,
+            'code'       => $this->code,
+            'statusCode' => $this->statusCode,
         ];
     }
 
+    /**
+     * @return string
+     */
+    public function getField(): string
+    {
+        return $this->field;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
+    }
 
 }

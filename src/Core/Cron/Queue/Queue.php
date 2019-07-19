@@ -32,7 +32,6 @@ class Queue
      */
     public static function add( Closure $callback, DateTimeInterface $when ): string
     {
-
         $serializer = self::$serializer;
 
         $serializedClosure = $serializer->serialize( $callback );
@@ -40,7 +39,6 @@ class Queue
         self::$cron->scheduleSingleEvent( $when->getTimestamp(), [ $serializedClosure ] );
 
         return $serializedClosure;
-
     }
 
     /**
