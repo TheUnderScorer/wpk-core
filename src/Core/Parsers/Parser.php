@@ -2,14 +2,20 @@
 
 namespace UnderScorer\Core\Parsers;
 
+/**
+ * Interface Parser
+ * @package UnderScorer\Core\Parsers
+ *
+ * This interface describes classes that parse some data into readable format
+ */
 interface Parser
 {
 
     /**
-     * @param mixed $item
+     * Parses given item
      *
      * @return mixed
      */
-    public static function parse( $item );
+    public function parse();
 
 }
