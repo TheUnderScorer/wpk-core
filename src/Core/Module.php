@@ -3,6 +3,7 @@
 namespace UnderScorer\Core;
 
 use UnderScorer\Core\Admin\Menu;
+use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\ModuleController;
 use UnderScorer\Core\Storage\StorageInterface;
 
@@ -25,7 +26,7 @@ abstract class Module
     protected $container;
 
     /**
-     * @var App Related app instance
+     * @var AppInterface Related app instance
      */
     protected $app;
 
@@ -48,11 +49,11 @@ abstract class Module
      * Module constructor.
      *
      * @param string           $ID
-     * @param App              $app
+     * @param AppInterface     $app
      * @param StorageInterface $container
      *
      */
-    public function __construct( string $ID, App $app, StorageInterface $container )
+    public function __construct( string $ID, AppInterface $app, StorageInterface $container )
     {
 
         $this->ID        = $ID;

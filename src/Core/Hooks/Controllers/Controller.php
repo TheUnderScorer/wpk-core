@@ -9,7 +9,6 @@ use UnderScorer\Core\Hooks\Middleware\Middleware;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\ResponseInterface;
 use UnderScorer\Core\Utility\Arr;
-use UnderScorer\Core\Validation\HasValidator;
 use UnderScorer\Core\View;
 
 /**
@@ -17,8 +16,6 @@ use UnderScorer\Core\View;
  */
 abstract class Controller
 {
-
-    use HasValidator;
 
     /**
      * @var ResponseInterface
@@ -71,13 +68,11 @@ abstract class Controller
      */
     protected function loadMiddleware()
     {
-
         foreach ( $this->middleware as $key => $middleware ) {
-            $this->middleware[ $key ] = new $middleware( $this->app );
+            $this->middleware[ $key ] = new $middleware( $this->app, $this->request, $this->response );
         }
 
         return $this;
-
     }
 
     /**
@@ -91,7 +86,7 @@ abstract class Controller
     /**
      * @param ResponseInterface $response
      *
-     * @return HttpController
+     * @return AjaxController
      */
     public function setResponse( ResponseInterface $response ): self
     {
@@ -111,7 +106,7 @@ abstract class Controller
     /**
      * @param Request $request
      *
-     * @return HttpController
+     * @return AjaxController
      */
     public function setRequest( Request $request ): self
     {
@@ -129,14 +124,12 @@ abstract class Controller
      */
     protected function render( string $path, array $data = [] ): string
     {
-
         /**
          * @var View $view
          */
         $view = $this->app->make( ViewRenderInterface::class );
 
         return $view->render( $path, $data );
-
     }
 
     /**
@@ -149,7 +142,6 @@ abstract class Controller
      */
     protected function middleware( $middleware = null, ...$params )
     {
-
         if ( empty( $middleware ) ) {
             $middleware = array_keys( $this->middleware );
         }
@@ -161,7 +153,6 @@ abstract class Controller
         }
 
         return $this;
-
     }
 
     /**
@@ -174,7 +165,7 @@ abstract class Controller
      */
     private function callMiddleware( Middleware $middleware, array $params = [] ): void
     {
-        call_user_func_array( [ $middleware, 'handle' ], $params );
+        $middleware->handle( ...$params );
     }
 
 }

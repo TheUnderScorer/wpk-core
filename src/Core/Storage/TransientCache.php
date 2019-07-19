@@ -13,7 +13,7 @@ use UnderScorer\Core\Utility\Arr;
  *
  * @author Przemysław Żydek
  */
-class Cache implements CacheInterface, Arrayable
+class TransientCache implements CacheInterface, Arrayable
 {
 
     /**
@@ -259,9 +259,9 @@ class Cache implements CacheInterface, Arrayable
     /**
      * @param string $expiration
      *
-     * @return Cache
+     * @return TransientCache
      */
-    public function setExpiration( string $expiration ): Cache
+    public function setExpiration( string $expiration ): TransientCache
     {
         $this->expiration = $expiration;
 

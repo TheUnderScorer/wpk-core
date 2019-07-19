@@ -17,14 +17,12 @@ class CoreMenu extends Controller
      */
     public function handle(): void
     {
-
         $data = [
             'version'    => $this->app->getSetting( 'version' ),
             'phpVersion' => PHP_VERSION,
         ];
 
         echo $this->render( 'admin.core-info', $data );
-
     }
 
     /**

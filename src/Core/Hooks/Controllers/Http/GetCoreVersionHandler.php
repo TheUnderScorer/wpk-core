@@ -2,13 +2,13 @@
 
 namespace UnderScorer\Core\Hooks\Controllers\Http;
 
-use UnderScorer\Core\Hooks\Controllers\HttpController;
+use UnderScorer\Core\Hooks\Controllers\AjaxController;
 use UnderScorer\Core\Http\ResponseTemplates\BaseResponse;
 
 /**
  * @author Przemysław Żydek
  */
-class GetCoreVersionHandler extends HttpController
+class GetCoreVersionHandler extends AjaxController
 {
 
     /**
