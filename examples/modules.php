@@ -102,7 +102,6 @@ class ExampleAjaxController extends AjaxController
      */
     public function handle(): void
     {
-
         // You can throw exceptions inside ajax controller, the error message will be send in response
         if ( $this->request->query->has( 'action' ) ) {
             throw new RequestException( 'Missing "action" parameter in query!' );
