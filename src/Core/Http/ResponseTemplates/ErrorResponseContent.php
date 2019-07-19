@@ -8,7 +8,7 @@ use UnderScorer\Core\Exceptions\RequestException;
 /**
  * @author Przemysław Żydek
  */
-class ErrorResponse extends BaseResponse
+class ErrorResponseContent extends ResponseContent
 {
 
     /**
@@ -29,7 +29,7 @@ class ErrorResponse extends BaseResponse
     /**
      * @param Exception $exception
      *
-     * @return ErrorResponse
+     * @return ErrorResponseContent
      */
     public function handleException( Exception $exception ): self
     {

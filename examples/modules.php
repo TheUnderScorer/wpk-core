@@ -4,6 +4,7 @@ use UnderScorer\Core\Exceptions\RequestException;
 use UnderScorer\Core\Hooks\Controllers\AjaxController;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Hooks\Middleware\ValidationMiddleware;
+use UnderScorer\Core\Http\ResponseTemplates\ResponseContent;
 use UnderScorer\Core\Module;
 
 /**
@@ -112,12 +113,15 @@ class ExampleAjaxController extends AjaxController
          */
         $this->middleware( 'validator', $this->request->request->all(), $this->validationRules );
 
-        $data = [
+        $content = new ResponseContent();
+        $data    = [
             'bar' => $this->request->request->get( 'foo' ),
         ];
 
+        $content->result = $data;
+
         // Sends response in json format
-        $this->response->setContent( $data )->json();
+        $this->response->setContent( $content )->json();
     }
 
 }

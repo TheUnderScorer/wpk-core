@@ -7,7 +7,7 @@ use Rakit\Validation\ErrorBag;
 use UnderScorer\Core\Exceptions\Exception;
 use UnderScorer\Core\Exceptions\RequestException;
 use UnderScorer\Core\Exceptions\ValidationException;
-use UnderScorer\Core\Http\ResponseTemplates\ErrorResponse;
+use UnderScorer\Core\Http\ResponseTemplates\ErrorResponseContent;
 
 /**
  * Class AjaxController
@@ -36,7 +36,7 @@ abstract class AjaxController extends Controller
     final public function handleRequest(): void
     {
         $response      = $this->response;
-        $errorResponse = new ErrorResponse();
+        $errorResponse = new ErrorResponseContent();
 
         try {
             $this->handle();

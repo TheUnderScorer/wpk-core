@@ -7,7 +7,7 @@ use UnderScorer\Core\Utility\AttributeBuilder;
 /**
  * @author Przemysław Żydek
  */
-class BaseResponse implements ResponseTemplateInterface
+class ResponseContent implements ResponseContentInterface
 {
 
     use AttributeBuilder;

@@ -4,7 +4,7 @@ namespace UnderScorer\Core\Hooks\Controllers\Http;
 
 use UnderScorer\Core\Exceptions\RequestException;
 use UnderScorer\Core\Hooks\Controllers\AjaxController;
-use UnderScorer\Core\Http\ResponseTemplates\BaseResponse;
+use UnderScorer\Core\Http\ResponseTemplates\ResponseContent;
 
 /**
  * @author Przemysław Żydek
@@ -27,7 +27,7 @@ class GetCoreVersionHandler extends AjaxController
      */
     public function handle(): void
     {
-        $response         = new BaseResponse();
+        $response         = new ResponseContent();
         $response->result = CORE_VERSION;
 
         $this->response->setContent( $response )->json();
