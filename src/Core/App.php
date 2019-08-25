@@ -4,7 +4,6 @@ namespace UnderScorer\Core;
 
 use Closure;
 use Illuminate\Container\Container;
-use Symfony\Component\HttpFoundation\Session\Session;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Http\Request;
@@ -76,13 +75,8 @@ class App extends Container implements AppInterface
         Request $request = null,
         ResponseInterface $response = null
     ) {
-
         if ( empty( $request ) ) {
             $request = Request::createFromGlobals();
-
-            $request->setSession(
-                new Session()
-            );
         }
 
         if ( empty( $response ) ) {
@@ -97,10 +91,8 @@ class App extends Container implements AppInterface
         $this->response = $response;
         $this->settings = $settings;
 
-
         do_action( 'wpk/core/loaded', $this );
         do_action( "wpk/core/$this->slug/loaded", $this );
-
     }
 
     /**

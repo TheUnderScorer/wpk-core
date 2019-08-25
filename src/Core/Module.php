@@ -5,7 +5,6 @@ namespace UnderScorer\Core;
 use UnderScorer\Core\Admin\Menu;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\ModuleController;
-use UnderScorer\Core\Storage\StorageInterface;
 
 /**
  * Base module class
@@ -19,11 +18,6 @@ abstract class Module
      * @var array Array of controllers to load
      */
     protected $controllers = [];
-
-    /**
-     * @var StorageInterface Container for controllers
-     */
-    protected $container;
 
     /**
      * @var AppInterface Related app instance
@@ -48,18 +42,15 @@ abstract class Module
     /**
      * Module constructor.
      *
-     * @param string           $ID
-     * @param AppInterface     $app
-     * @param StorageInterface $container
+     * @param string       $ID
+     * @param AppInterface $app
      *
      */
-    public function __construct( string $ID, AppInterface $app, StorageInterface $container )
+    public function __construct( string $ID, AppInterface $app )
     {
-
-        $this->ID        = $ID;
-        $this->menu      = new Menu( $ID );
-        $this->container = $container;
-        $this->app       = $app;
+        $this->ID   = $ID;
+        $this->menu = new Menu( $ID );
+        $this->app  = $app;
 
         $app->singleton( static::class, function () {
             return $this;
@@ -77,8 +68,7 @@ abstract class Module
 
         } );
 
-        do_action( 'wpk/module/init', $this );
-
+        do_action( 'wpk.module.init', $this );
     }
 
     /**
@@ -86,17 +76,13 @@ abstract class Module
      */
     private function loadControllers(): void
     {
-
         foreach ( $this->controllers as $controller ) {
-
             $controllerInstance = new $controller( $this->app );
 
             $this->app->setupController( $controllerInstance );
 
             $this->container->add( $controllerInstance );
-
         }
-
     }
 
     /**
@@ -120,38 +106,6 @@ abstract class Module
     final public function getMenu(): Menu
     {
         return $this->menu;
-    }
-
-    /**
-     * Add module instance to provided controllers
-     *
-     * @param array  $controllers
-     * @param Module $module
-     *
-     * @return void
-     */
-    protected function setControllerModules( array $controllers, Module $module = null ): void
-    {
-
-        if ( empty( $module ) ) {
-            $module = $this;
-        }
-
-        foreach ( $controllers as $controller ) {
-
-            /**
-             * @var ModuleController $instance
-             */
-            $instance = $this->container->get( $controller );
-
-            if ( empty( $instance ) || ! $instance instanceof ModuleController ) {
-                continue;
-            }
-
-            $instance->setModule( $module );
-
-        }
-
     }
 
 }

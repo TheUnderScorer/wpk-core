@@ -2,3 +2,5 @@
 /tests/phpunit/.env
 /plugin/views/cache
 /.idea
+
+!/.idea

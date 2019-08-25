@@ -17,9 +17,11 @@ class Response extends BaseResponse implements ResponseInterface
      */
     public function json(): void
     {
-       $this->sendHeaders();
+        $content = is_string( $this->content ) ? json_decode( $this->content ) : $this->content;
 
-        wp_send_json( $this->content, $this->statusCode );
+        $this->sendHeaders();
+
+        wp_send_json( $content, $this->statusCode );
     }
 
     /**

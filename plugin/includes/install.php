@@ -8,7 +8,6 @@ use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Cron\Queue\Queue;
 use UnderScorer\Core\Enqueue;
 use UnderScorer\Core\Providers\ServiceProvider;
-use UnderScorer\Core\Storage\ServiceContainer;
 
 /**
  * @param string $includes
@@ -102,6 +101,6 @@ function modules( AppInterface $app ): void
     $modules = require $app->getPath( 'config' ) . 'modules.php';
 
     foreach ( $modules as $ID => $module ) {
-        new $module( $ID, $app, new ServiceContainer );
+        new $module( $ID, $app );
     }
 }
