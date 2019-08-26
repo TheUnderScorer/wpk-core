@@ -91,8 +91,8 @@ class App extends Container implements AppInterface
         $this->response = $response;
         $this->settings = $settings;
 
-        do_action( 'wpk/core/loaded', $this );
-        do_action( "wpk/core/$this->slug/loaded", $this );
+        do_action( 'wpk.core.loaded', $this );
+        do_action( "wpk.core.$this->slug.", $this );
     }
 
     /**

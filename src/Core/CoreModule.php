@@ -50,7 +50,7 @@ class CoreModule extends Module
             ->setMenuTitle( $title )
             ->setIcon( $enqueue->getAssetsPath( 'img/kraken.png' ) )
             ->setCallback( function () {
-                do_action( "wpk/{$this->app->getSlug()}/menu" );
+                do_action( "wpk.{$this->app->getSlug()}.menu" );
             } );
 
     }
