@@ -80,8 +80,6 @@ abstract class Module
             $controllerInstance = new $controller( $this->app );
 
             $this->app->setupController( $controllerInstance );
-
-            $this->container->add( $controllerInstance );
         }
     }
 
