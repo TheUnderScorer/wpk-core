@@ -42,15 +42,17 @@ class ErrorHandler extends Controller
         var_export( $context );
         $message .= ob_get_clean();
 
-        if ( ! function_exists( 'wp_mail' ) ) {
-            require_once ABSPATH . '/wp-includes/pluggable.php';
-        }
+        if ( defined( 'SEND_EMAIL_ON_ERROR' ) && SEND_EMAIL_ON_ERROR ) {
+            if ( ! function_exists( 'wp_mail' ) ) {
+                require_once ABSPATH . '/wp-includes/pluggable.php';
+            }
 
-        wp_mail(
-            $email,
-            $title,
-            $message
-        );
+            wp_mail(
+                $email,
+                $title,
+                $message
+            );
+        }
 
         return true;
     }
