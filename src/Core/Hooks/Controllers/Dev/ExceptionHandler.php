@@ -26,10 +26,6 @@ class ExceptionHandler extends Controller
         $title   = sprintf( 'Uncaught excption on %s.', $this->request->server->get( 'HTTP_HOST' ) );
         $message = "Following error occured: {$throwable->getMessage()} in file {$throwable->getFile()} on line {$throwable->getLine()}. Error context: \n";
 
-        if ( ! function_exists( 'wp_mail' ) ) {
-            require_once ABSPATH . '/wp-includes/pluggable.php';
-        }
-
         if ( ! defined( 'IS_GRAPHQL' ) || ! IS_GRAPHQL ) {
             if ( ! function_exists( 'wp_mail' ) ) {
                 require_once ABSPATH . '/wp-includes/pluggable.php';
@@ -43,7 +39,7 @@ class ExceptionHandler extends Controller
         }
 
         if ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'IS_GRAPHQL' ) && IS_GRAPHQL ) ) {
-            wp_die( $throwable->getMessage(), 'GraphQL Error', [
+            wp_die( $throwable->getMessage(), 'Server error', [
                 'code'     => $throwable->getCode(),
                 'response' => apply_filters( 'wpk.exception.responseCode', 500, $throwable ),
             ] );
