@@ -25,6 +25,16 @@ class Response extends BaseResponse implements ResponseInterface
     }
 
     /**
+     * @return mixed|BaseResponse|void
+     */
+    public function send()
+    {
+        parent::send();
+
+        die();
+    }
+
+    /**
      * @param mixed $content
      *
      * @return BaseResponse

@@ -6,6 +6,8 @@ use ArrayAccess;
 use Closure;
 use Illuminate\Contracts\Container\Container;
 use UnderScorer\Core\Hooks\Controllers\Controller;
+use UnderScorer\Core\Http\Request;
+use UnderScorer\Core\Http\ResponseInterface;
 use UnderScorer\Core\Storage\StorageInterface;
 
 /**
@@ -92,5 +94,15 @@ interface AppInterface extends Container, ArrayAccess
      * @return void
      */
     public function onDeactivation( Closure $callback ): void;
+
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request;
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getResponse(): ResponseInterface;
 
 }

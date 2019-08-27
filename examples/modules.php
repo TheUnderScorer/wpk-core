@@ -4,7 +4,7 @@ use UnderScorer\Core\Exceptions\RequestException;
 use UnderScorer\Core\Hooks\Controllers\AjaxController;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Hooks\Middleware\ValidationMiddleware;
-use UnderScorer\Core\Http\ResponseTemplates\ResponseContent;
+use UnderScorer\Core\Http\ResponseContents\ResponseContent;
 use UnderScorer\Core\Module;
 
 /**

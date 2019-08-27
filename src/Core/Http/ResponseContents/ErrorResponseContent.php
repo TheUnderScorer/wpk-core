@@ -1,6 +1,6 @@
 <?php
 
-namespace UnderScorer\Core\Http\ResponseTemplates;
+namespace UnderScorer\Core\Http\ResponseContents;
 
 use Exception;
 use UnderScorer\Core\Exceptions\RequestException;
@@ -33,12 +33,13 @@ class ErrorResponseContent extends ResponseContent
      */
     public function handleException( Exception $exception ): self
     {
-
         if ( $exception instanceof RequestException ) {
+            $this->code = $exception->getStatusCode();
+
             return $this->addMessage(
                 $exception->getMessage(),
-                $exception->toArray()
-            );
+                $exception->getCode(),
+                );
         }
 
         // At this point we assume that this is internal error

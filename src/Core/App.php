@@ -10,6 +10,7 @@ use UnderScorer\Core\Bootstrap\EnqueueBootstrap;
 use UnderScorer\Core\Bootstrap\MigrationsBootstrap;
 use UnderScorer\Core\Bootstrap\ModulesBootstrap;
 use UnderScorer\Core\Bootstrap\ProvidersBootstrap;
+use UnderScorer\Core\Bootstrap\RoutesBootstrap;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Http\Request;
@@ -106,6 +107,10 @@ class App extends Container implements AppInterface
         $this->response = $response;
         $this->settings = $settings;
 
+        $this->singleton( AppInterface::class, function () {
+            return $this;
+        } );
+
         $this->bootstrap();
 
         do_action( 'wpk.core.loaded', $this );
@@ -119,11 +124,33 @@ class App extends Container implements AppInterface
     {
         return [
             ProvidersBootstrap::class,
+            RoutesBootstrap::class,
             MigrationsBootstrap::class,
             CronsBootstrap::class,
             EnqueueBootstrap::class,
             ModulesBootstrap::class,
         ];
+    }
+
+    /**
+     * Performs bootstrap of application
+     *
+     * @return App
+     */
+    protected function bootstrap(): self
+    {
+        $bootstrapClasses = apply_filters( 'wpk.core.bootstrapClasses', $this->bootstrapClasses );
+
+        foreach ( $bootstrapClasses as $bootstrapClass ) {
+            /**
+             * @var BaseBootstrap $bootstrap
+             */
+            $bootstrap = new $bootstrapClass( $this );
+
+            $bootstrap->bootstrap();
+        }
+
+        return $this;
     }
 
     /**
@@ -257,23 +284,18 @@ class App extends Container implements AppInterface
     }
 
     /**
-     * Performs bootstrap of application
-     *
-     * @return App
+     * @return ResponseInterface
      */
-    protected function bootstrap(): self
+    public function getResponse(): ResponseInterface
     {
-        $bootstrapClasses = apply_filters( 'wpk.core.bootstrapClasses', $this->bootstrapClasses );
+        return $this->response;
+    }
 
-        foreach ( $bootstrapClasses as $bootstrapClass ) {
-            /**
-             * @var BaseBootstrap $bootstrap
-             */
-            $bootstrap = new $bootstrapClass( $this );
-
-            $bootstrap->bootstrap();
-        }
-
-        return $this;
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace UnderScorer\Core\Http\ResponseTemplates;
+namespace UnderScorer\Core\Http\ResponseContents;
 
 use UnderScorer\Core\Utility\AttributeBuilder;
 

@@ -13,6 +13,7 @@ Text Domain: wpk-core
 */
 
 use Exception;
+use TypeRocket\Core\Launcher;
 use UnderScorer\Core\AcfSettings;
 use UnderScorer\Core\App;
 use UnderScorer\Core\Settings;
@@ -30,6 +31,8 @@ $slug = CORE_SLUG;
 
 // Require composer autoloader
 require_once $dir . '/../vendor/autoload.php';
+
+( new Launcher() )->initCore();
 
 try {
 

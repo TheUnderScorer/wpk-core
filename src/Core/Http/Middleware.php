@@ -1,10 +1,8 @@
 <?php
 
-namespace UnderScorer\Core\Hooks\Middleware;
+namespace UnderScorer\Core\Http;
 
 use UnderScorer\Core\Contracts\AppInterface;
-use UnderScorer\Core\Http\Request;
-use UnderScorer\Core\Http\ResponseInterface;
 
 /**
  * @author Przemysław Żydek
@@ -34,17 +32,17 @@ abstract class Middleware
      * @param Request           $request
      * @param ResponseInterface $response
      */
-    public function __construct( AppInterface $app, Request $request = null, ResponseInterface $response = null )
+    public function __construct( AppInterface $app, ?Request $request = null, ?ResponseInterface $response = null )
     {
         $this->app      = $app;
-        $this->request  = $request;
-        $this->response = $response;
+        $this->request  = $request ? $request : $app->getRequest();
+        $this->response = $response ? $response : $app->getResponse();
     }
 
     /**
      * Calls middleware
      *
-     * @return mixed
+     * @return void
      */
     abstract public function handle();
 
