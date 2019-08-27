@@ -24,7 +24,8 @@
     "illuminate/pagination": "^5.4",
     "the-under-scorer/wp-eloquent": "^1.2.0",
     "symfony/filesystem": "^4.3",
-    "rakit/validation": "^1.1"
+    "rakit/validation": "^1.1",
+    "typerocket/typerocket": "^4.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^7"
