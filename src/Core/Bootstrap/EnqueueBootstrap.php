@@ -21,7 +21,7 @@ class EnqueueBootstrap extends BaseBootstrap
      */
     public function bootstrap(): void
     {
-        $configDir   = $this->getConfigPath();
+        $configDir   = $this->getConfigDir();
         $enqueueFile = $configDir . 'enqueue.php';
 
         $fileSystem = $this->app->make( Filesystem::class );

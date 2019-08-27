@@ -21,13 +21,11 @@ final class TransientCacheTest extends TestCase
      */
     public function testIsCachingAnyValue()
     {
-
         $value = 'test_value';
 
         $this->cache->set( 'test', $value );
 
         $this->assertEquals( $value, $this->cache->get( 'test' ) );
-
     }
 
     /**
@@ -35,14 +33,12 @@ final class TransientCacheTest extends TestCase
      */
     public function testIsRemovingValue()
     {
-
         $value = 'test_value';
 
         $this->cache->set( 'test', $value );
         $this->cache->delete( 'test' );
 
         $this->assertEmpty( $this->cache->get( 'test' ) );
-
     }
 
     /**
@@ -50,7 +46,6 @@ final class TransientCacheTest extends TestCase
      */
     public function testIsCacheValueBeingRemovedOnTime()
     {
-
         $value = 'test_value';
 
         $this->cache->set( 'test', $value );
@@ -59,7 +54,6 @@ final class TransientCacheTest extends TestCase
 
         $this->assertEmpty( $this->cache->get( 'test' ) );
         $this->assertTrue( empty( $this->cache->getTransientsKeys() ) );
-
     }
 
     /**

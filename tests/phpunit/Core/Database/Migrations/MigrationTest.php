@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core\Tests\Core\Database\Migrations;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use UnderScorer\Core\Tests\TestCase;
 
 /**
@@ -17,7 +18,7 @@ class MigrationTest extends TestCase
     protected $migration;
 
     /**
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     public function setUp()
     {
@@ -28,7 +29,7 @@ class MigrationTest extends TestCase
     }
 
     /**
-     *
+     * @return void
      */
     public function tearDown()
     {
@@ -48,7 +49,9 @@ class MigrationTest extends TestCase
         $connection = $this->migration->getConnection();
         $this->migration->up();
 
-        $connection->insert( "INSERT INTO {$connection->db->prefix}test_table (name, value) VALUES ('test_name', 'test_value')" );
+        $connection->insert(
+            "INSERT INTO {$connection->db->prefix}test_table (name, value) VALUES ('test_name', 'test_value')"
+        );
 
         $row = $connection->table( 'test_table' )->first( '*' );
 

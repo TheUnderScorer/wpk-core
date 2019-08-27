@@ -23,7 +23,7 @@ class MigrationsBootstrap extends BaseBootstrap
     {
         $fileSystem = $this->app->make( Filesystem::class );
 
-        $migrationsFile = $this->getConfigPath() . 'migrations.php';
+        $migrationsFile = $this->getConfigDir() . 'migrations.php';
 
         if ( ! $fileSystem->exists( $migrationsFile ) ) {
             return;

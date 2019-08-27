@@ -18,14 +18,18 @@ abstract class BaseBootstrap
      */
     protected $app;
 
+    protected $configDir = '';
+
     /**
      * BaseBootstrap constructor.
      *
      * @param AppInterface $app
+     * @param string       $configDir
      */
-    public function __construct( AppInterface $app )
+    public function __construct( AppInterface $app, string $configDir = '' )
     {
-        $this->app = $app;
+        $this->app       = $app;
+        $this->configDir = $configDir ? $configDir : $this->app->getPath( 'config' );
     }
 
     /**
@@ -38,9 +42,9 @@ abstract class BaseBootstrap
     /**
      * @return string
      */
-    protected function getConfigPath(): string
+    public function getConfigDir(): string
     {
-        return $this->app->getPath( 'config' );
+        return $this->configDir;
     }
 
 }

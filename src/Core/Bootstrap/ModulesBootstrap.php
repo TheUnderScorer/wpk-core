@@ -18,7 +18,7 @@ class ModulesBootstrap extends BaseBootstrap
     {
         do_action( 'wpk.bootstrap.beforeModules', $this->app );
 
-        $modules = require_once $this->getConfigPath() . '/modules.php';
+        $modules = require_once $this->getConfigDir() . '/modules.php';
 
         foreach ( $modules as $ID => $module ) {
             new $module( $ID, $this->app );

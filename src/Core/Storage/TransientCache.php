@@ -74,7 +74,6 @@ class TransientCache implements CacheInterface, Arrayable
      */
     public function clear(): bool
     {
-
         foreach ( $this->transientsKeys as $key ) {
             $this->delete( $key );
         }
@@ -83,7 +82,6 @@ class TransientCache implements CacheInterface, Arrayable
         $this->updateTransients();
 
         return true;
-
     }
 
     /**
@@ -95,7 +93,6 @@ class TransientCache implements CacheInterface, Arrayable
      */
     public function delete( $key ): bool
     {
-
         $uniqueKey = $this->createUniqueKey( $key );
 
         $this->removeTransientKey( $uniqueKey );
@@ -122,7 +119,6 @@ class TransientCache implements CacheInterface, Arrayable
      */
     protected function removeTransientKey( string $key ): bool
     {
-
         foreach ( $this->transientsKeys as $index => $transientKey ) {
 
             if ( $transientKey === $key ) {
@@ -132,7 +128,6 @@ class TransientCache implements CacheInterface, Arrayable
         }
 
         return $this->updateTransients();
-
     }
 
     /**
@@ -154,7 +149,6 @@ class TransientCache implements CacheInterface, Arrayable
      */
     public function getMultiple( $keys, $default = null ): iterable
     {
-
         $result = [];
 
         foreach ( $keys as $key ) {
@@ -162,7 +156,6 @@ class TransientCache implements CacheInterface, Arrayable
         }
 
         return $result;
-
     }
 
     /**
@@ -173,7 +166,6 @@ class TransientCache implements CacheInterface, Arrayable
      */
     public function get( $key, $default = null )
     {
-
         if ( ! self::ENABLED ) {
             return $default;
         }
@@ -188,7 +180,6 @@ class TransientCache implements CacheInterface, Arrayable
         }
 
         return $value;
-
     }
 
     /**
@@ -201,13 +192,11 @@ class TransientCache implements CacheInterface, Arrayable
      */
     public function setMultiple( $values, $ttl = null ): bool
     {
-
         foreach ( $values as $key => $value ) {
             $this->set( $value, $key, $ttl );
         }
 
         return true;
-
     }
 
     /**
@@ -222,7 +211,6 @@ class TransientCache implements CacheInterface, Arrayable
      */
     public function set( $key, $value, $ttl = null ): bool
     {
-
         if ( empty( $expiration ) ) {
             $expiration = $this->getExpiration();
         } else {
@@ -234,7 +222,6 @@ class TransientCache implements CacheInterface, Arrayable
                 $expiration = strtotime( $expiration ) - time();
             }
 
-
         }
 
         if ( ! self::ENABLED || empty( $value ) ) {
@@ -245,7 +232,6 @@ class TransientCache implements CacheInterface, Arrayable
         $this->addTransientKey( $uniqueKey );
 
         return set_transient( $uniqueKey, maybe_serialize( $value ), $expiration );
-
     }
 
     /**
@@ -289,7 +275,6 @@ class TransientCache implements CacheInterface, Arrayable
      */
     public function deleteMultiple( $keys ): bool
     {
-
         foreach ( $keys as $key ) {
             $this->delete( $key );
         }
@@ -324,7 +309,6 @@ class TransientCache implements CacheInterface, Arrayable
      */
     public function toArray()
     {
-
         $result = [];
 
         foreach ( $this->transientsKeys as $key => $value ) {
@@ -332,7 +316,6 @@ class TransientCache implements CacheInterface, Arrayable
         }
 
         return $result;
-
     }
 
 }
