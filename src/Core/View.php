@@ -46,7 +46,6 @@ class View implements ViewRenderInterface
      */
     public function __construct( Filesystem $filesystem, string $path, string $cachePath = '' )
     {
-
         $this->fileSystem = $filesystem;
         $this->path       = $path;
 
@@ -61,7 +60,6 @@ class View implements ViewRenderInterface
         }
 
         $this->blade = new Blade( $this->path, $this->cachePath );
-
     }
 
 

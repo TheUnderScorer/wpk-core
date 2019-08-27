@@ -43,7 +43,9 @@ class Route extends BaseRoute
     }
 
     /**
-     * @param array  $args
+     * Handles current route
+     *
+     * @param array  $args Args fetched from url path
      * @param string $controller
      */
     protected function handleRoute( array $args, string $controller ): void
@@ -53,7 +55,6 @@ class Route extends BaseRoute
             $args,
             is_array( $this->middleware ) ? $this->middleware : Arr::make( $this->middleware ),
             $this->app,
-
         );
 
         $kernel->bootstrap();

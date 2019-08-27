@@ -74,6 +74,9 @@ class Kernel implements KernelInterface
         }
     }
 
+    /**
+     * @return void
+     */
     protected function handleRequest(): void
     {
         /**
@@ -93,6 +96,8 @@ class Kernel implements KernelInterface
     }
 
     /**
+     * Calls middlewares for current route
+     *
      * @return void
      */
     protected function handleMiddleware(): void

@@ -18,7 +18,6 @@ class CoreModule extends Module
     protected $controllers = [
         Controllers\Admin\DebugMenu::class,
         Controllers\Admin\CoreMenu::class,
-        Controllers\Http\GetCoreVersionHandler::class,
     ];
 
     /**

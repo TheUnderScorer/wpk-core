@@ -24,7 +24,6 @@ class Upload
      */
     public static function createAttachment( array $file ): int
     {
-
         $upload = wp_handle_upload( $file, [ 'test_form' => false ] );
 
         if ( isset( $upload[ 'error' ] ) ) {
@@ -52,7 +51,6 @@ class Upload
         wp_update_attachment_metadata( $attachID, $attachmentData );
 
         return $attachID;
-
     }
 
 }

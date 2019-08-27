@@ -3,22 +3,13 @@
 namespace UnderScorer\Core\Http;
 
 use UnderScorer\Core\BaseController;
-use UnderScorer\Core\Contracts\NextContract;
 
 /**
  * Class Controller
  * @package UnderScorer\Core\Http
  */
-abstract class Controller extends BaseController implements NextContract
+abstract class Controller extends BaseController
 {
-
-    /**
-     * @return void
-     */
-    public function next(): void
-    {
-        $this->handle();
-    }
 
     /**
      * Handles request

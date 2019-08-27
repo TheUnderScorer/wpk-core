@@ -3,7 +3,6 @@
 namespace UnderScorer\Core\Admin;
 
 use UnderScorer\Core\Contracts\ViewRenderInterface;
-use function UnderScorer\Core\view;
 
 /**
  * @author Przemysław Żydek
@@ -23,7 +22,7 @@ class Notices
      */
     public function __construct( ViewRenderInterface $view )
     {
-        $this->view = $view;;
+        $this->view = $view;
     }
 
     /**
@@ -36,11 +35,9 @@ class Notices
      */
     public function add( string $text, string $type = 'notice-info' ): void
     {
-
         add_action( 'admin_notices', function () use ( $text, $type ) {
             echo $this->view->render( 'admin.notice', [ 'type' => $type, 'text' => $text ] );
         } );
-
     }
 
 }
