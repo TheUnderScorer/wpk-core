@@ -6,7 +6,6 @@ use UnderScorer\Core\App;
 use UnderScorer\Core\Tests\Common\Factories\ControllerFactory;
 use WP_Ajax_UnitTestCase as BaseTestCase;
 
-
 /**
  * Class TestCase
  * @package UnderScorer\Core\Tests

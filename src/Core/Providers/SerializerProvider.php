@@ -3,6 +3,7 @@
 namespace UnderScorer\Core\Providers;
 
 use SuperClosure\Serializer;
+use UnderScorer\Core\Cron\Queue\Queue;
 
 /**
  * Class SerializerProvider
@@ -15,8 +16,12 @@ class SerializerProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton( Serializer::class, function () {
-            return new Serializer();
+        $serializer = new Serializer();
+
+        Queue::setSerializer( $serializer );
+
+        $this->app->singleton( Serializer::class, function () use ( $serializer ) {
+            return $serializer;
         } );
     }
 

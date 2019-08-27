@@ -18,8 +18,6 @@ class CoreModule extends Module
     protected $controllers = [
         Controllers\Admin\DebugMenu::class,
         Controllers\Admin\CoreMenu::class,
-        Controllers\Dev\ErrorHandler::class,
-        Controllers\Dev\ExceptionHandler::class,
         Controllers\Http\GetCoreVersionHandler::class,
     ];
 
@@ -52,7 +50,6 @@ class CoreModule extends Module
             ->setCallback( function () {
                 do_action( "wpk.{$this->app->getSlug()}.menu" );
             } );
-
     }
 
 }

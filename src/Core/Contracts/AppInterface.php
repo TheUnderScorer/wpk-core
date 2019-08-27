@@ -6,7 +6,7 @@ use ArrayAccess;
 use Closure;
 use Illuminate\Contracts\Container\Container;
 use UnderScorer\Core\Hooks\Controllers\Controller;
-use UnderScorer\Core\Settings;
+use UnderScorer\Core\Storage\StorageInterface;
 
 /**
  * Interface AppInterface
@@ -63,9 +63,9 @@ interface AppInterface extends Container, ArrayAccess
     public function getSetting( string $key );
 
     /**
-     * @return Settings
+     * @return StorageInterface
      */
-    public function getSettings(): Settings;
+    public function getSettings(): StorageInterface;
 
     /**
      * @param string $key

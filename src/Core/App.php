@@ -4,6 +4,12 @@ namespace UnderScorer\Core;
 
 use Closure;
 use Illuminate\Container\Container;
+use UnderScorer\Core\Bootstrap\BaseBootstrap;
+use UnderScorer\Core\Bootstrap\CronsBootstrap;
+use UnderScorer\Core\Bootstrap\EnqueueBootstrap;
+use UnderScorer\Core\Bootstrap\MigrationsBootstrap;
+use UnderScorer\Core\Bootstrap\ModulesBootstrap;
+use UnderScorer\Core\Bootstrap\ProvidersBootstrap;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Http\Request;
@@ -50,6 +56,11 @@ class App extends Container implements AppInterface
     protected $url;
 
     /**
+     * @var array
+     */
+    protected $bootstrapClasses = [];
+
+    /**
      * @var ResponseInterface
      */
     private $response;
@@ -65,6 +76,7 @@ class App extends Container implements AppInterface
      * @param string            $slug Plugin slug
      * @param string            $file Main plugin file
      * @param StorageInterface  $settings Settings instance
+     * @param array             $bootstrapClasses
      * @param Request           $request
      * @param ResponseInterface $response
      */
@@ -72,6 +84,7 @@ class App extends Container implements AppInterface
         string $slug,
         string $file,
         StorageInterface $settings,
+        array $bootstrapClasses = [],
         Request $request = null,
         ResponseInterface $response = null
     ) {
@@ -83,6 +96,8 @@ class App extends Container implements AppInterface
             $response = new Response;
         }
 
+        $this->bootstrapClasses = empty( $bootstrapClasses ) ? $this->getDefaultBootstrapClasses() : $bootstrapClasses;
+
         $this->slug     = $slug;
         $this->file     = empty( $file ) ? __FILE__ : $file;
         $this->url      = plugin_dir_url( $this->file );
@@ -91,8 +106,24 @@ class App extends Container implements AppInterface
         $this->response = $response;
         $this->settings = $settings;
 
+        $this->bootstrap();
+
         do_action( 'wpk.core.loaded', $this );
         do_action( "wpk.core.$this->slug.", $this );
+    }
+
+    /**
+     * @return array
+     */
+    private function getDefaultBootstrapClasses(): array
+    {
+        return [
+            ProvidersBootstrap::class,
+            MigrationsBootstrap::class,
+            CronsBootstrap::class,
+            EnqueueBootstrap::class,
+            ModulesBootstrap::class,
+        ];
     }
 
     /**
@@ -179,9 +210,9 @@ class App extends Container implements AppInterface
     }
 
     /**
-     * @return Settings
+     * @return StorageInterface
      */
-    public function getSettings(): Settings
+    public function getSettings(): StorageInterface
     {
         return $this->settings;
     }
@@ -223,5 +254,26 @@ class App extends Container implements AppInterface
         register_deactivation_hook( $this->file, function () use ( $callback ) {
             $callback( $this );
         } );
+    }
+
+    /**
+     * Performs bootstrap of application
+     *
+     * @return App
+     */
+    protected function bootstrap(): self
+    {
+        $bootstrapClasses = apply_filters( 'wpk.core.bootstrapClasses', $this->bootstrapClasses );
+
+        foreach ( $bootstrapClasses as $bootstrapClass ) {
+            /**
+             * @var BaseBootstrap $bootstrap
+             */
+            $bootstrap = new $bootstrapClass( $this );
+
+            $bootstrap->bootstrap();
+        }
+
+        return $this;
     }
 }

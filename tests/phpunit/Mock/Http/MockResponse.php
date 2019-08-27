@@ -2,14 +2,13 @@
 
 namespace UnderScorer\Core\Tests\Mock\Http;
 
-use UnderScorer\Core\Http\ResponseInterface;
-use UnderScorer\Core\Http\ResponseTemplates\ResponseContentInterface;
+use UnderScorer\Core\Http\Response;
 
 /**
  * Class MockResponse
  * @package UnderScorer\Core\Tests\Mock\Http
  */
-class MockResponse implements ResponseInterface
+class MockResponse extends Response
 {
 
     /**
@@ -38,15 +37,19 @@ class MockResponse implements ResponseInterface
     protected $redirectUrl = '';
 
     /**
-     * Sends json with provided response template
-     *
-     * @param ResponseContentInterface $response
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function send( ResponseContentInterface $response ): void
+    public function send(): void
     {
-        $this->sentResponses[] = $response;
+        $this->sentResponses[] = $this->content;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function json(): void
+    {
+        $this->sentResponses[] = $this->content;
     }
 
     /**
@@ -60,25 +63,13 @@ class MockResponse implements ResponseInterface
     /**
      * Redirects user to provided url
      *
-     * @return void
-     */
-    public function redirect(): void
-    {
-        $this->redirects[] = $this->redirectUrl;
-    }
-
-    /**
-     * Set redirect url
-     *
      * @param string $url
      *
-     * @return static
+     * @return void
      */
-    public function setRedirectUrl( string $url )
+    public function redirect( string $url ): void
     {
-        $this->redirectUrl = $url;
-
-        return $this;
+        $this->redirects[] = $url;
     }
 
     /**

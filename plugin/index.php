@@ -31,9 +31,6 @@ $slug = CORE_SLUG;
 // Require composer autoloader
 require_once $dir . '/../vendor/autoload.php';
 
-// Require plugin installation function
-require_once $dir . '/includes/install.php';
-
 try {
 
     $settings = function_exists( 'get_field' ) ?
@@ -45,8 +42,6 @@ try {
         __FILE__,
         $settings
     );
-
-    install( $app );
 
     return $app;
 
