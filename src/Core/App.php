@@ -11,6 +11,7 @@ use UnderScorer\Core\Bootstrap\MigrationsBootstrap;
 use UnderScorer\Core\Bootstrap\ModulesBootstrap;
 use UnderScorer\Core\Bootstrap\ProvidersBootstrap;
 use UnderScorer\Core\Bootstrap\RoutesBootstrap;
+use UnderScorer\Core\Bootstrap\TyperocketBootstrap;
 use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Http\Request;
@@ -124,6 +125,7 @@ class App extends Container implements AppInterface
     {
         return [
             ProvidersBootstrap::class,
+            TyperocketBootstrap::class,
             RoutesBootstrap::class,
             MigrationsBootstrap::class,
             CronsBootstrap::class,
