@@ -40,6 +40,66 @@ abstract class Middleware
     }
 
     /**
+     * @return AppInterface
+     */
+    public function getApp(): AppInterface
+    {
+        return $this->app;
+    }
+
+    /**
+     * @param AppInterface $app
+     *
+     * @return static
+     */
+    public function setApp( AppInterface $app ): self
+    {
+        $this->app = $app;
+
+        return $this;
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getResponse(): ResponseInterface
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return static
+     */
+    public function setResponse( ResponseInterface $response ): self
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return static
+     */
+    public function setRequest( Request $request ): self
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    /**
      * Calls middleware
      *
      * @return void
