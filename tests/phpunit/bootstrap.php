@@ -11,7 +11,7 @@ $dir = __DIR__;
 
 require_once $dir . '/../../vendor/autoload.php';
 
-$testsDir = __DIR__ . '/Suite/wordpress-tests-lib';
+$testsDir = __DIR__ . '/Suite/tests/phpunit';
 
 if ( ! file_exists( $testsDir ) ) {
     echo 'Error! No test suite found.';
@@ -35,7 +35,7 @@ require $testsDir . '/includes/bootstrap.php';
 /**
  * @var App $app
  */
-$app = require $dir . '/../../index.php';
+$app = require $dir . '/../../plugin/index.php';
 
 TestCase::setApp( $app );
 

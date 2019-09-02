@@ -9,7 +9,7 @@ use UnderScorer\Core\Tests\TestCase;
  * Class MigrationTest
  * @package UnderScorer\Core\Tests\Core\Database\Migrations
  */
-class MigrationTest extends TestCase
+final class MigrationTest extends TestCase
 {
 
     /**

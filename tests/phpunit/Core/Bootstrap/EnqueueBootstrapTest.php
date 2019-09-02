@@ -11,7 +11,7 @@ use UnderScorer\Core\Tests\TestCase;
  * Class EnqueueBootstrapTest
  * @package UnderScorer\Core\Tests\Core\Bootstrap
  */
-class EnqueueBootstrapTest extends TestCase
+final class EnqueueBootstrapTest extends TestCase
 {
 
     /**
