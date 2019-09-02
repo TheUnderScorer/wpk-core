@@ -82,6 +82,8 @@ class App extends Container implements AppInterface
      * @param array             $bootstrapClasses
      * @param Request           $request
      * @param ResponseInterface $response
+     *
+     * @throws BindingResolutionException
      */
     public function __construct(
         string $slug,
