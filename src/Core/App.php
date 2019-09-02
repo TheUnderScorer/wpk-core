@@ -18,7 +18,6 @@ use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\Response;
 use UnderScorer\Core\Http\ResponseInterface;
-use UnderScorer\Core\Lifecycle\Activable;
 use UnderScorer\Core\Storage\StorageInterface;
 
 /**
@@ -26,7 +25,7 @@ use UnderScorer\Core\Storage\StorageInterface;
  *
  * @author Przemysław Żydek
  */
-class App extends Container implements AppInterface, Activable
+class App extends Container implements AppInterface
 {
 
     /**
