@@ -4,7 +4,6 @@ namespace UnderScorer\Core\Http;
 
 use Throwable;
 use UnderScorer\Core\Contracts\AppInterface;
-use UnderScorer\Core\Hooks\Middleware\Middleware;
 use UnderScorer\Core\Http\Contracts\KernelInterface;
 use UnderScorer\Core\Http\ResponseContents\ErrorResponseContent;
 
@@ -89,7 +88,7 @@ class Kernel implements KernelInterface
         );
 
         if ( ! empty( $this->middlewares ) || ! empty( $this->middleware ) ) {
-            $this->handleMiddleware( $this->args );
+            $this->handleMiddleware();
         }
 
         $instance->handle( ...$this->args );
