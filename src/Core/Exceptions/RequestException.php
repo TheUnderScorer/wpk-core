@@ -14,7 +14,7 @@ class RequestException extends Exception implements Arrayable
     /**
      * @var string
      */
-    protected $field = '';
+    protected $errorCode = '';
 
     /**
      * @var int
@@ -25,13 +25,13 @@ class RequestException extends Exception implements Arrayable
      * RequestException constructor.
      *
      * @param string $message
+     * @param string $errorCode
      * @param int    $statusCode
-     * @param string $field
      */
-    public function __construct( string $message = '', int $statusCode = 500, $field = '' )
+    public function __construct( string $message = '', string $errorCode = 'SERVER_ERROR', int $statusCode = 500 )
     {
         $this->statusCode = $statusCode;
-        $this->field      = $field;
+        $this->errorCode  = $errorCode;
 
         parent::__construct( $message );
     }
@@ -42,9 +42,8 @@ class RequestException extends Exception implements Arrayable
     public function toArray(): array
     {
         return [
-            'field'      => $this->field,
             'message'    => $this->message,
-            'code'       => $this->code,
+            'errorCode'  => $this->errorCode,
             'statusCode' => $this->statusCode,
         ];
     }
@@ -52,9 +51,9 @@ class RequestException extends Exception implements Arrayable
     /**
      * @return string
      */
-    public function getField(): string
+    public function getErrorCode(): string
     {
-        return $this->field;
+        return $this->errorCode;
     }
 
     /**

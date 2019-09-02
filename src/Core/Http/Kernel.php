@@ -4,6 +4,7 @@ namespace UnderScorer\Core\Http;
 
 use Throwable;
 use UnderScorer\Core\Contracts\AppInterface;
+use UnderScorer\Core\Exceptions\RequestException;
 use UnderScorer\Core\Http\Contracts\KernelInterface;
 use UnderScorer\Core\Http\ResponseContents\ErrorResponseContent;
 
@@ -63,13 +64,7 @@ class Kernel implements KernelInterface
         try {
             $this->handleRequest();
         } catch ( Throwable $e ) {
-            $errorResponse = new ErrorResponseContent();
-            $errorResponse->handleException( $e );
-
-            $this->app
-                ->getResponse()
-                ->setContent( $errorResponse )
-                ->json();
+            $this->handleException( $e );
         }
     }
 
@@ -110,6 +105,24 @@ class Kernel implements KernelInterface
 
             $instance->handle( ...$this->args );
         }
+    }
+
+    /**
+     * @param Throwable $e
+     */
+    protected function handleException( Throwable $e ): void
+    {
+        $errorResponse = new ErrorResponseContent();
+        $errorResponse->handleException( $e );
+
+        $response = $this->app->getResponse();
+        $response->setContent( $errorResponse );
+
+        if ( $e instanceof RequestException ) {
+            $response->setStatusCode( $e->getStatusCode() );
+        }
+
+        $response->json();
     }
 
 }
