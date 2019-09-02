@@ -3,6 +3,7 @@
 namespace UnderScorer\Core\Bootstrap;
 
 use Exception;
+use Symfony\Component\Filesystem\Filesystem;
 use UnderScorer\Core\Utility\Date;
 
 /**
@@ -20,10 +21,17 @@ class CronsBootstrap extends BaseBootstrap
      */
     public function bootstrap(): void
     {
-        $app = $this->app;
+        $app        = $this->app;
+        $fileSystem = $app->make( Filesystem::class );
 
         $config = $app->getPath( 'config' );
-        $crons  = require $config . 'schedules.php';
+        $file   = $config . 'schedules.php';
+
+        if ( ! $fileSystem->exists( $file ) ) {
+            return;
+        }
+
+        $crons = require $file;
 
         $cron               = $crons[ 'cron' ];
         $recurrentSchedules = $crons[ 'recurrentSchedules' ];
