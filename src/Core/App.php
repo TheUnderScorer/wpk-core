@@ -160,6 +160,8 @@ class App extends Container implements AppInterface
     }
 
     /**
+     * Loads given array of controllers
+     *
      * @param array $controllers
      *
      * @return void
@@ -250,6 +252,8 @@ class App extends Container implements AppInterface
     }
 
     /**
+     * Fetches given setting from settings instance
+     *
      * @param string $key
      * @param mixed  $value
      *
