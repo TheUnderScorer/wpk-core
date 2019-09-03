@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core\Hooks\Controllers\Cleaners;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Psr\Log\LoggerInterface;
 use UnderScorer\Core\Cron\Cleaners\PostCleaner;
 use UnderScorer\Core\Hooks\Controllers\Cron\CronController;
@@ -26,7 +27,7 @@ class PostRemovalHandler extends CronController
      * @param int $postID
      *
      * @return void
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     public function handle( int $postID = 0 ): void
     {
@@ -50,7 +51,6 @@ class PostRemovalHandler extends CronController
         }
 
         $logger->notice( $message, [ __METHOD__ ] );
-
     }
 
 }
