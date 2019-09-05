@@ -19,13 +19,20 @@ class Route extends BaseRoute
     protected $app;
 
     /**
+     * @var Router
+     */
+    protected $router;
+
+    /**
      * Route constructor.
      *
      * @param AppInterface $app
+     * @param Router       $router
      */
-    public function __construct( AppInterface $app )
+    public function __construct( AppInterface $app, Router $router )
     {
-        $this->app = $app;
+        $this->app    = $app;
+        $this->router = $router;
     }
 
     /**
@@ -58,6 +65,14 @@ class Route extends BaseRoute
         );
 
         $kernel->bootstrap();
+    }
+
+    /**
+     * @return Router
+     */
+    public function end(): Router
+    {
+        return $this->router;
     }
 
 }

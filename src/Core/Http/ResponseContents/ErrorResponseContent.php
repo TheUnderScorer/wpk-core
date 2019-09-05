@@ -2,7 +2,7 @@
 
 namespace UnderScorer\Core\Http\ResponseContents;
 
-use Exception;
+use Throwable;
 use UnderScorer\Core\Exceptions\RequestException;
 
 /**
@@ -17,40 +17,34 @@ class ErrorResponseContent extends ResponseContent
     protected $error = true;
 
     /**
+     * @var string
+     */
+    protected $errorCode = 'REQUEST_ERROR';
+
+    /**
      * @var array
      */
     protected $messages = [];
 
     /**
-     * @var int
-     */
-    protected $code = 500;
-
-    /**
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return ErrorResponseContent
      */
-    public function handleException( Exception $exception ): self
+    public function handleException( Throwable $exception ): self
     {
         if ( $exception instanceof RequestException ) {
-            $this->code = $exception->getStatusCode();
-
             return $this->addMessage(
                 $exception->getMessage(),
-                $exception->getCode(),
+                $exception->getErrorCode(),
                 );
         }
-
-        // At this point we assume that this is internal error
-        $this->code = 500;
 
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
             return $this->addMessage( $exception->getMessage() );
         }
 
         return $this->addMessage( 'Internal server error.' );
-
     }
 
     /**
@@ -64,7 +58,6 @@ class ErrorResponseContent extends ResponseContent
      */
     public function addMessage( string $message, $code = 'SERVER_ERROR', $args = [] ): self
     {
-
         $args += [
             'code'    => $code,
             'field'   => '',
@@ -74,7 +67,6 @@ class ErrorResponseContent extends ResponseContent
         $this->messages[] = $args;
 
         return $this;
-
     }
 
     /**
@@ -101,26 +93,6 @@ class ErrorResponseContent extends ResponseContent
     public function setError( bool $error ): self
     {
         $this->error = $error;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCode(): int
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param int $code
-     *
-     * @return self
-     */
-    public function setCode( int $code ): self
-    {
-        $this->code = $code;
 
         return $this;
     }

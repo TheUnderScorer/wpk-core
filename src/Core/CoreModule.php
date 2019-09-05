@@ -3,6 +3,7 @@
 namespace UnderScorer\Core;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
+use UnderScorer\Core\Contracts\AppInterface;
 use UnderScorer\Core\Hooks\Controllers;
 
 /**
@@ -13,12 +14,20 @@ class CoreModule extends Module
 {
 
     /**
-     * @var array
+     * CoreModule constructor.
+     *
+     * @param string       $ID
+     * @param AppInterface $app
      */
-    protected $controllers = [
-        Controllers\Admin\DebugMenu::class,
-        Controllers\Admin\CoreMenu::class,
-    ];
+    public function __construct( string $ID, AppInterface $app )
+    {
+        $this->controllers = apply_filters( "wpk.core.controllers.{$app->getSlug()}", [
+            Controllers\Admin\DebugMenu::class,
+            Controllers\Admin\CoreMenu::class,
+        ] );
+
+        parent::__construct( $ID, $app );
+    }
 
     /**
      * Performs module bootstrap

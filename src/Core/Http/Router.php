@@ -33,7 +33,7 @@ class Router
      */
     public function route(): Route
     {
-        return $this->app->make( Route::class );
+        return $this->app->make( Route::class, [ 'router' => $this ] );
     }
 
 }

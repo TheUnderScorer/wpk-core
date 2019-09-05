@@ -8,13 +8,14 @@ use Illuminate\Contracts\Container\Container;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 use UnderScorer\Core\Http\Request;
 use UnderScorer\Core\Http\ResponseInterface;
+use UnderScorer\Core\Lifecycle\Activable;
 use UnderScorer\Core\Storage\StorageInterface;
 
 /**
  * Interface AppInterface
  * @package UnderScorer\Core\Contracts
  */
-interface AppInterface extends Container, ArrayAccess
+interface AppInterface extends Container, ArrayAccess, Activable
 {
 
     /**

@@ -4,6 +4,7 @@ namespace UnderScorer\Core;
 
 use Closure;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use UnderScorer\Core\Bootstrap\BaseBootstrap;
 use UnderScorer\Core\Bootstrap\CronsBootstrap;
 use UnderScorer\Core\Bootstrap\EnqueueBootstrap;
@@ -81,6 +82,8 @@ class App extends Container implements AppInterface
      * @param array             $bootstrapClasses
      * @param Request           $request
      * @param ResponseInterface $response
+     *
+     * @throws BindingResolutionException
      */
     public function __construct(
         string $slug,
@@ -138,6 +141,7 @@ class App extends Container implements AppInterface
      * Performs bootstrap of application
      *
      * @return App
+     * @throws BindingResolutionException
      */
     protected function bootstrap(): self
     {
@@ -147,7 +151,7 @@ class App extends Container implements AppInterface
             /**
              * @var BaseBootstrap $bootstrap
              */
-            $bootstrap = new $bootstrapClass( $this );
+            $bootstrap = $this->make( $bootstrapClass );
 
             $bootstrap->bootstrap();
         }
@@ -156,17 +160,18 @@ class App extends Container implements AppInterface
     }
 
     /**
+     * Loads given array of controllers
+     *
      * @param array $controllers
      *
      * @return void
+     * @throws BindingResolutionException
      */
     public function loadControllers( array $controllers ): void
     {
         foreach ( $controllers as $controller ) {
-
-            $instance = new $controller( $this );
+            $instance = $this->make( $controller );
             $this->setupController( $instance );
-
         }
     }
 
@@ -247,6 +252,8 @@ class App extends Container implements AppInterface
     }
 
     /**
+     * Fetches given setting from settings instance
+     *
      * @param string $key
      * @param mixed  $value
      *

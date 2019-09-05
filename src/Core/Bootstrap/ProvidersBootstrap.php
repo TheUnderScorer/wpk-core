@@ -2,6 +2,7 @@
 
 namespace UnderScorer\Core\Bootstrap;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use UnderScorer\Core\Providers\ServiceProvider;
 
 /**
@@ -15,6 +16,7 @@ class ProvidersBootstrap extends BaseBootstrap
      * Performs bootstrap of core functionality.
      *
      * @return void
+     * @throws BindingResolutionException
      */
     public function bootstrap(): void
     {
@@ -24,7 +26,7 @@ class ProvidersBootstrap extends BaseBootstrap
             /**
              * @var ServiceProvider $provider
              */
-            $provider = new $providerClass( $this->app );
+            $provider = $this->app->make( $providerClass );
 
             $provider->register();
         }
