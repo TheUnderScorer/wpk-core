@@ -84,4 +84,12 @@ class View implements ViewRenderInterface
         return $this->blade->render( $file, $data );
     }
 
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
 }
