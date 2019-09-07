@@ -54,6 +54,13 @@ abstract class Migration
     abstract public function down(): void;
 
     /**
+     * Returns table name (without prefix)
+     *
+     * @return string
+     */
+    abstract public function getTable(): string;
+
+    /**
      * @return Database
      */
     public function getConnection(): Database
