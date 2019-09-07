@@ -17,7 +17,7 @@ class RouterProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind( Router::class );
+        $this->app->singleton( Router::class );
         $this->app->bind( Route::class );
     }
 

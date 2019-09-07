@@ -25,12 +25,8 @@ class DatabaseProvider extends ServiceProvider
             return Database::instance();
         } );
 
-        $this->app->bind( Grammar::class, function () {
-            return new MySqlGrammar();
-        } );
-
+        $this->app->bind( Grammar::class, MySqlGrammar::class );
         $this->app->bind( Blueprint::class );
-
         $this->app->bind( Migration::class );
     }
 

@@ -14,7 +14,7 @@ class CacheProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind( CacheInterface::class, function ( AppInterface $app ) {
+        $this->app->singleton( CacheInterface::class, function ( AppInterface $app ) {
             return new TransientCache( $app->getSlug(), '+1 hour', $app->getSettings() );
         } );
     }

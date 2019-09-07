@@ -16,7 +16,7 @@ class NoticesProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton( Notices::class, Notices::class );
+        $this->app->singleton( Notices::class );
     }
 
 }

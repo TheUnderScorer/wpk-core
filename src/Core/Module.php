@@ -57,7 +57,6 @@ abstract class Module
         } );
 
         add_action( 'plugins_loaded', function () {
-
             if ( ! empty( $this->controllers ) ) {
                 $this->loadControllers();
             }
@@ -65,7 +64,6 @@ abstract class Module
             $this->bootstrap();
 
             $this->loaded = true;
-
         } );
 
         do_action( 'wpk.module.init', $this );

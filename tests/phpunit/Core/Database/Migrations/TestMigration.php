@@ -38,4 +38,13 @@ final class TestMigration extends Migration
         $this->drop( 'test_table' );
     }
 
+    /**
+     * Returns table name (without prefix)
+     *
+     * @return string
+     */
+    public function getTable(): string
+    {
+        return 'test_table';
+    }
 }
