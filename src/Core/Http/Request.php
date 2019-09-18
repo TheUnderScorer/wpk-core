@@ -26,11 +26,9 @@ class Request extends BaseRequest
      */
     public function isAjax(): bool
     {
-
         return wp_doing_ajax() ||
                isset( $_SERVER[ 'HTTP_X_REQUESTED_WITH' ] ) &&
                strtolower( $_SERVER[ 'HTTP_X_REQUESTED_WITH' ] ) === 'xmlhttprequest';
-
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace UnderScorer\Core\Providers;
 
-use Rakit\Validation\Validator;
+use UnderScorer\Core\Validation\Validator;
 
 /**
  * Class ValidationProvider
