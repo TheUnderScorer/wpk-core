@@ -31,7 +31,6 @@ class HandleQueue extends CronController
      */
     public function handle( string $serializedClosure = '' ): void
     {
-
         if ( ! $serializedClosure ) {
             return;
         }
@@ -42,6 +41,5 @@ class HandleQueue extends CronController
         $closure = $serializer->unserialize( $serializedClosure );
 
         $closure();
-
     }
 }
