@@ -36,11 +36,9 @@ class Settings implements StorageInterface
      */
     public function get( string $key )
     {
-
         $value = $this->getField( $key );
 
         return apply_filters( 'wpk/settings/get', $value, $key );
-
     }
 
     /**
@@ -53,11 +51,9 @@ class Settings implements StorageInterface
      */
     protected function getField( $key, $default = null )
     {
-
         $prefix = $this->prefix;
 
         return get_option( $prefix . $key, $default );
-
     }
 
     /**
@@ -109,13 +105,11 @@ class Settings implements StorageInterface
      */
     public function addMany( array $items )
     {
-
         foreach ( $items as $key => $item ) {
             $this->add( $item, $key );
         }
 
         return $this;
-
     }
 
     /**
@@ -137,11 +131,9 @@ class Settings implements StorageInterface
      */
     protected function updateField( $key, $value ): bool
     {
-
         $prefix = $this->prefix;
 
         return update_option( $prefix . $key, $value );
-
     }
 
     /**
@@ -163,11 +155,9 @@ class Settings implements StorageInterface
      */
     protected function removeField( string $key ): bool
     {
-
         $prefix = $this->prefix;
 
         return delete_option( $prefix . $key );
-
     }
 
     /**
