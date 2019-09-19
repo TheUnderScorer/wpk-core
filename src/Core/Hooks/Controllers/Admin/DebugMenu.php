@@ -3,6 +3,7 @@
 namespace UnderScorer\Core\Hooks\Controllers\Admin;
 
 use UnderScorer\Core\Admin\Menu;
+use UnderScorer\Core\Admin\Notices;
 use UnderScorer\Core\Hooks\Controllers\Controller;
 
 /**
@@ -17,6 +18,12 @@ class DebugMenu extends Controller
      */
     public function handle(): void
     {
+        if ( $this->request->query->has( 'wpk' ) ) {
+            $notices = $this->app->make( Notices::class );
+
+            $notices->addCachedNotice( 'I am cached!' );
+        }
+
         if ( ! wp_doing_ajax() ) {
 
 
@@ -40,5 +47,7 @@ class DebugMenu extends Controller
             'callback'   => [ $this, 'handle' ],
             'parentSlug' => $this->app->getSlug(),
         ] );
+
+        add_action( 'admin_init', [ $this, 'handle' ] );
     }
 }
