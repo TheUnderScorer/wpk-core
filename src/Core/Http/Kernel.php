@@ -29,6 +29,7 @@ class Kernel implements KernelInterface
      * @var array
      */
     protected $args;
+
     /**
      * @var AppInterface
      */
@@ -70,17 +71,17 @@ class Kernel implements KernelInterface
 
     /**
      * @return void
+     * @throws BindingResolutionException
      */
     protected function handleRequest(): void
     {
         /**
          * @var Controller $instance
          */
-        $instance = new $this->controller(
-            $this->app,
-            $this->app->getRequest(),
-            $this->app->getResponse()
-        );
+        $instance = $this->app->make( $this->controller, [
+            'request'  => $this->app->getRequest(),
+            'response' => $this->app->getResponse(),
+        ] );
 
         if ( ! empty( $this->middlewares ) || ! empty( $this->middleware ) ) {
             $this->handleMiddleware();
@@ -120,6 +121,8 @@ class Kernel implements KernelInterface
 
         if ( $e instanceof RequestException ) {
             $response->setStatusCode( $e->getStatusCode() );
+        } else {
+            $response->setStatusCode( 500 );
         }
 
         $response->json();
